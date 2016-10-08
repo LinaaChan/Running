@@ -1,0 +1,28 @@
+<ion-view view-title="天气预报">
+  <ion-content>
+
+    <iframe style="min-height: 200px;text-align: center;" src="http://www.thinkpage.cn/weather/weather.aspx?uid=U9BAE1BB4E&cid=CHSH000000&l=zh-CHS&p=SMART&a=0&u=C&s=1&m=0&x=1&d=3&fc=&bgc=&bc=&ti=0&in=0&li=" frameborder="0" scrolling="no" width="100%" height="200" allowTransparency="true"></iframe>
+
+    <div class="list card" ng-repeat="info in weatherDays">
+    <!-- <div class="item item-text-wrap item-divider">
+       <p>未来几天</p>
+    </div>-->
+      <div class="item item-text-wrap"   >
+        <div>
+       <p> {{info.date}}</p>
+          <img style="float: right" ng-src="{{'img/3d_60/'+info.code_day+'.png'}}">
+          <p>
+        {{info.high+'~'+info.low+'℃'}}
+        </p>
+        <p>
+          {{'日间天气：'+info.text_day}}  {{'晚间天气：'+info.text_night}}
+        </p>
+          <p>风速：{{info.wind_speed}}</p>
+       </div>
+      </div>
+    </div>
+
+
+  </ion-content>
+
+</ion-view>

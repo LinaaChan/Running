@@ -1,0 +1,64 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left" style="background:transparent;background-image: url('./img/sidemenu_bg2.jpg');">
+    <ion-header-bar style="background: transparent;">
+
+    </ion-header-bar>
+    <ion-content>
+      <div style="background-color: transparent;"  class="list">
+        <a style="background-color: transparent;border: transparent" class="item item-avatar-left " menu-close ng-click="getInfo()">
+          <img ng-src="{{ava_default}}">
+          <p style="color: white;font-size: 18px;font-weight: bold">{{MyName}}
+            <!--{{userData.userName}}-->
+            <img class="title" style="float:right;" ng-src="{{weather_imgUrl}}">
+          </p>
+          <p style="float:right;color: white" >
+            {{weather.temperature+'℃'}} &nbsp;{{weather.text}}
+          </p>
+
+
+        </a>
+        <a style="background: transparent;;border: transparent;color: #f2f2f2" class="item item-icon-left " menu-close href="#/app/home">
+          <i class="icon ion-ios-home"></i> 我的主页
+        </a>
+        <a style="background: transparent;;border: transparent;color: #f2f2f2" class="item item-icon-left" menu-close href="#/app/search">
+        <i class="icon ion-ribbon-a "></i> 我的参与
+        </a>
+        <!--<a style="background: transparent;;border: transparent;color: #f2f2f2"  class="item item-icon-left " menu-close href="#/app/search">-->
+           <!--<i class="icon ion-images"></i> 我的相册-->
+        <!--</a>-->
+        <!--<a style="background-color: transparent;;border: transparent;color: #f2f2f2" class="item item-icon-left positive-bg" menu-close href="#/app/search">-->
+          <!--<i class="icon ion-android-star"></i> 收藏路线-->
+        <!--</a>-->
+        <a style="background-color: transparent;;border: transparent;color: #f2f2f2" class="item item-icon-left positive-bg" menu-close ng-href="#/app/weather">
+          <i class="icon ion-android-star"></i> 天气预报
+        </a>
+        <a style="background-color: transparent;;border: transparent;color: #f2f2f2" class="item item-icon-left positive-bg" menu-close href="#/app/search">
+          <i class="icon ion-checkmark-round"></i> 我的发布
+        </a>
+        <!--<a style="background-color: transparent;;border: transparent;color: #f2f2f2" class="item item-icon-left positive-bg" menu-close href="#/app/search">-->
+          <!--<i class="icon ion-navicon-round"></i> 跑后感-->
+        <!--</a>-->
+     </div>
+
+      <div class="list">
+        <a style="margin-top:20px;;border: transparent;background-color: transparent;" class="item item-icon-left assertive" menu-close ng-click="doExit()">
+          <i class="icon ion-android-exit"></i> 退出
+        </a>
+      </div>
+
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>

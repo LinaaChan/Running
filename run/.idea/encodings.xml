@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/www/css/style.css" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/js/app.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/js/general_controllers.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/js/login_services.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/js/runInfo_controller.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/js/services.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/js/weatherInfo_controller.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/templates/home.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/templates/login.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/templates/menu.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/templates/playlists.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/templates/register.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/templates/runPost_filling.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/templates/weather.html" charset="UTF-8" />
+  </component>
+</project>

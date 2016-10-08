@@ -1,0 +1,85 @@
+<ion-view view-title="我的信息">
+  <ion-nav-buttons side="right">
+    <a class="button button-clear icon  ion-compose"></a>
+  </ion-nav-buttons>
+  <ion-content>
+    <div class="list">
+      <div class="item item-icon-right">
+        <div class="row widthSize">
+          <div class="col-67 myInfoAvatar1 widthSize">
+            <br>
+            <a> <h2><strong>头像</strong></h2></a>
+          </div>
+          <div class="col-33 infoCol widthSize" ng-click="addAttachment()">
+            <img style="height: 60px;width: 60px;" ng-src="img/a1.jpg" >
+          </div>
+        </div>
+      </div>
+
+      <div class="item  item-icon-right widthSize" >
+        <div class="row widthSize" >
+          <div class="col-67 widthSize">
+            <h2><strong>用户名</strong></h2>
+          </div>
+          <div  class="col-33 infoCol widthSize">
+            {{username}}
+          </div>
+        </div>
+
+      </div>
+
+      <div class="item  item-icon-right widthSize">
+        <div class="row widthSize">
+          <div class="col-67 widthSize">
+            <h2><strong>密码</strong></h2>
+          </div>
+          <div  class="col-33 widthSize">
+            修改
+          </div>
+        </div>
+      </div>
+
+      <div class="item  item-icon-right widthSize">
+        <div class="row widthSize">
+          <div class="col-67 widthSize">
+            <h2><strong>手机号</strong></h2>
+          </div>
+          <div  class="col-33 infoCol widthSize">
+            未绑定
+          </div>
+        </div>
+        <a> <i class="icon ion-ios-arrow-right"></i></a>
+      </div>
+
+
+
+
+      <div class="item  item-icon-right widthSize" >
+        <div class="row widthSize">
+          <div class="col-67 widthSize">
+            <h2><strong>年龄</strong></h2>
+          </div>
+          <div  class="col-33 infoCol widthSize">
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="item  item-icon-right widthSize" >
+        <div class="row widthSize">
+          <div class="col-67 widthSize">
+            <h2><strong>简介</strong></h2>
+          </div>
+          <div  class="col-33 infoCol widthSize">
+
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </ion-content>
+</ion-view>

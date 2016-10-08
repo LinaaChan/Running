@@ -1,0 +1,52 @@
+<ion-view view-title="最新动态" hide-back-button="true">
+
+  <ion-content  scroll="true" overflow-scroll="true"  class="padding" >
+    <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()">
+    </ion-refresher>
+
+    <div class="list" ng-repeat="playlist in listInfo" ng-click="goToDetail(playlist.a_id)">
+
+      <div class="item item-text-wrap" >
+        <div class="row" >
+          <div class="col-33">
+            <a style="background-color: transparent;border: none" class="item item-avatar-left " menu-close>
+              <img ng-src="./img/avatar1.jpg">
+            </a>
+            <p>{{playlist.toAccount}}</p>
+          </div>
+          <div class="col-66" >
+
+            <br>
+
+
+            <p style="text-align: right"> {{playlist.time}}</p>
+          </div>
+        </div>
+        <div  class="row" >
+          <div class="col-33">
+            <a style="background-color: transparent;border: none"  class="item item-avatar-left " menu-close>
+
+            </a>
+          </div>
+          <div class="col-66" >
+            <a> 距离：{{playlist.distance}}</a><br/>
+            <a> 人数：{{playlist.p_number}}</a><br/>
+            <a> 路线：{{playlist.route}}</a><br/>
+            <a> 留言：{{playlist.description}}</a><br/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+       <ion-infinite-scroll ng-if="hasmore" on-infinite="loadMore()" distance="1%">
+       </ion-infinite-scroll>
+
+  </ion-content>
+
+
+  <ion-footer-bar class="bar-energized">
+         <a style="color: #007aff" class="button button-large button-icon icon ion-paper-airplane pull-right" ng-click="upload()">
+         </a>
+  </ion-footer-bar>
+
+</ion-view>

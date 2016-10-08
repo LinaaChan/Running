@@ -1,0 +1,60 @@
+<ion-view view-title="注册">
+
+  <ion-content>
+
+
+
+
+      <div class="list">
+        <form name="signup_form" novalidate >
+        <label class="item item-input">
+          <span class="input-label">Username</span>
+          <input type="text" placeholder="用户名在3~8位之间" name="name" ng-model="signup.name" ng-minlength=3 ng-maxlength=8 ng-class="{error: signup_form.name.$dirty && signup_form.name.$invalid}" ensure-unique="name" ng-focus required />
+
+        </label>
+        <div class="error" ng-show="signup_form.name.$dirty && signup_form.name.$invalid && !signup_form.name.$focused">
+          <small  ng-show="signup_form.name.$error.required">
+          <p class="errorText">用户名不能为空</p>
+          </small>
+          <small  ng-show="signup_form.name.$error.minlength">
+           <p class="errorText">用户名至少3位</p>
+          </small>
+          <small  ng-show="signup_form.name.$error.maxlength">
+            <p class="errorText">用户名不能超过8位</p>
+          </small>
+          <small  ng-show="signup_form.name.$error.unique">
+            <p class="errorText"> 用户名已存在</p>
+          </small>
+        </div>
+
+
+        <label class="item item-input">
+          <span class="input-label">Password</span>
+          <input type="password" placeholder="密码在6~20位之间" name="password" ng-model="signup.password" ng-minlength=6 ng-maxlength=20 ng-class="{error: signup_form.password.$dirty && signup_form.password.$invalid}" ng-focus required />
+        </label>
+
+        <div class="error" ng-show="signup_form.password.$dirty && signup_form.password.$invalid && signup_form.submitted">
+
+          <small   ng-show="signup_form.password.$error.required">
+            <p class="errorText">密码不能为空</p>
+          </small>
+          <small ng-show="signup_form.password.$error.minlength">
+            <p class="errorText"> 密码至少6位</p>
+          </small>
+          <small  ng-show="signup_form.password.$error.maxlength">
+            <p class="errorText"> 密码不能超过20位</p>
+          </small>
+
+        </div>
+        <label class="item">
+          <button type="submit" class="button button-block button-positive"  ng-click="signupForm(signup_form)">Submit</button>
+          <!--<button type="submit" class="button button-block button-positive"  >Register</button>-->
+        </label>
+
+        </form>
+      </div>
+
+
+
+  </ion-content>
+</ion-view>

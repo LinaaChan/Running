@@ -1,0 +1,55 @@
+<ion-view view-title="发布动态">
+  <ion-content>
+
+    <form name="form" class="list inset" novalidate>
+      <div class="list">
+        <label class="item item-input">
+        <span class="input-label">日期</span>
+        <input type="date" ng-model="runInfoData.date"></label>
+        <label class="item item-input">
+          <span class="input-label">时间</span>
+          <input type="time" ng-model="runInfoData.time"></label>
+        <label class="item item-input">
+          <span class="input-label">地点</span>
+          <select size="1" style="border: transparent" ng-model="runInfoData.addr">
+            <option>5号门</option>
+            <option>3号门</option>
+            <option>1号门</option>
+            <option>东区体育场</option>
+            <option>灯塔</option>
+          </select>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">希望人数</span>
+          <input type="number" ng-model="runInfoData.num"></label>
+        <label class="item item-input">
+          <span class="input-label">小伙伴性别</span>
+          <select size="1" style="border: transparent" ng-model="runInfoData.sex">
+            <option>男</option>
+            <option>女</option>
+            <option>不限</option>
+          </select></label>
+        <label class="item item-input">
+          <span class="input-label">跑步长度</span>
+          <select size="1" style="border: transparent" ng-model="runInfoData.len">
+            <option>400m</option>
+            <option>800m</option>
+            <option>1000m</option>
+            <option>其他</option>
+          </select></label>
+        <label class="item item-input">
+          <span class="input-label">持续时长(min)</span>
+          <input type="number" ng-model="runInfoData.timeLast"></label>
+        <label class="item item-input">
+          <span class="input-label">留言</span>
+         <textarea cols="20" rows="4" ng-model="runInfoData.note"></textarea></label>
+      </div>
+
+    </form>
+    <div style="margin: 5px;">
+      <button class="button button-block button-positive" ng-click="upload()">
+       发布
+      </button>
+    </div>
+
+</ion-view>

@@ -1,0 +1,71 @@
+/* Empty. Add your own CSS if you like */
+.item h1,
+.item h2,
+.item h3,
+.item h4,
+.item h5,
+.item h6,
+.item p,
+.item-content,
+.item-content h1,
+.item-content h2,
+.item-content h3,
+.item-content h4,
+.item-content h5,
+.item-content h6,
+.item-content p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+a {
+  text-decoration: none;
+  color: #555555;
+}
+.menu-text-color {
+  color: white;
+}
+.menu-background-color{
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#c9de96+0,8ab66b+57,398235+100 */
+  background: #c9de96; /* Old browsers */
+  /*background: -moz-radial-gradient(center, ellipse cover,  #c9de96 0%, #8ab66b 57%, #398235 100%); /!* FF3.6-15 *!/*/
+  /*background: -webkit-radial-gradient(center, ellipse cover,  #c9de96 0%,#8ab66b 57%,#398235 100%); /!* Chrome10-25,Safari5.1-6 *!/*/
+  background: radial-gradient(ellipse at center,  #c9de96 0%,#8ab66b 57%,#398235 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9de96', endColorstr='#398235',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+}
+
+.menu-background-color2 {
+}
+
+.frosted-glass{
+  -webkit-filter: blur(10px); /* Chrome, Opera */
+  -moz-filter: blur(10px);
+  -ms-filter: blur(10px);
+  filter: blur(10px);
+  filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false); /* IE6~IE9 */
+}
+
+
+.row {
+  border: 0px solid green;
+}
+
+
+.errorText{
+  text-align: right;
+  color: red;
+}
+
+.actionsheet{
+  text-align: center;
+  color: #0c63ee;
+  font-size: 20px;
+}
+.infoCol{
+  text-align: right;
+  width: 100%;
+}
+.widthSize{
+  width: 100%;
+}
