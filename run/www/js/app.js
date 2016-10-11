@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.homeCtrl', 'starter.runCtrl',
-  'starter.generalController', 'starter.weaCtrl','logService','homeService','runInfoService','Directives'])
+  'starter.generalController', 'starter.weaCtrl','logService','homeService','runInfoService','Directives','myPostInfoCtrls'])
 
-  .run(function ($ionicPlatform,$cordovaToast,$rootScope, $location, $timeout, $ionicHistory,$ionicPopup ) {
+  .run(function ($ionicPlatform,$cordovaToast,$rootScope, $location, $timeout, $ionicHistory,$ionicPopup,$templateCache ) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -22,7 +22,6 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
-
     });
 
     $ionicPlatform.registerBackButtonAction(function (e) {
@@ -110,15 +109,26 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
         }
       })
 
-      .state('app.browse', {
-        url: '/browse',
+      .state('app.myPosts', {
+        url: '/myPosts',
         views: {
           'menuContent': {
-            templateUrl: 'templates/browse.html'
+            templateUrl: 'templates/myPosts.html',
+            controller:'myPostsCtrl'
 
           }
         }
       })
+
+  /*    .state('app.myPostsDetail', {
+        url: '/myPost_detail',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/myPost_detail.html',
+            controller: 'myPostDetailCtrl'
+          }
+        }
+      })*/
       .state('app.register', {
         url: '/register',
         views: {
@@ -144,7 +154,8 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
         views: {
           'menuContent': {
             templateUrl: 'templates/home.html',
-            controller: 'HomeCtrl'
+            controller: 'HomeCtrl',
+            cache:'false'
           }
         }
       })

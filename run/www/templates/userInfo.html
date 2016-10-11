@@ -1,85 +1,54 @@
 <ion-view view-title="我的信息">
   <ion-nav-buttons side="right">
-    <a class="button button-clear icon  ion-compose"></a>
+    <a class="button button-clear icon  ion-compose" ng-if="!isEdit" ng-click="edit()"></a>
   </ion-nav-buttons>
   <ion-content>
-    <div class="list">
+    <form class="list">
       <div class="item item-icon-right">
-        <div class="row widthSize">
-          <div class="col-67 myInfoAvatar1 widthSize">
+        <div class="row widthSize item item-icon-right">
+          <div class="col-33 myInfoAvatar1 widthSize">
             <br>
-            <a> <h2><strong>头像</strong></h2></a>
+            <a> <strong>头像</strong></a>
           </div>
-          <div class="col-33 infoCol widthSize" ng-click="addAttachment()">
-            <img style="height: 60px;width: 60px;" ng-src="img/a1.jpg" >
-          </div>
-        </div>
-      </div>
-
-      <div class="item  item-icon-right widthSize" >
-        <div class="row widthSize" >
-          <div class="col-67 widthSize">
-            <h2><strong>用户名</strong></h2>
-          </div>
-          <div  class="col-33 infoCol widthSize">
-            {{username}}
-          </div>
-        </div>
-
-      </div>
-
-      <div class="item  item-icon-right widthSize">
-        <div class="row widthSize">
-          <div class="col-67 widthSize">
-            <h2><strong>密码</strong></h2>
-          </div>
-          <div  class="col-33 widthSize">
-            修改
+          <div class="col-67 infoCol widthSize" ng-click="addAttachment()">
+            <img  style="height: 60px;width: 60px;" ng-src="{{myInfo.photo}}" >
           </div>
         </div>
       </div>
 
-      <div class="item  item-icon-right widthSize">
-        <div class="row widthSize">
-          <div class="col-67 widthSize">
-            <h2><strong>手机号</strong></h2>
-          </div>
-          <div  class="col-33 infoCol widthSize">
-            未绑定
-          </div>
-        </div>
-        <a> <i class="icon ion-ios-arrow-right"></i></a>
+      <label class="item item-input">
+        <span class="input-label"><strong>用户名</strong></span>
+        <input ng-model="myInfo.account" style="background: white;text-align: right" ng-value="myInfo.account" ng-readonly="!isEdit" type="text" class="widthSize"/>
+      </label>
+
+      <label class="item item-input">
+        <span class="input-label"><strong>昵称</strong></span>
+        <input ng-model="myInfo.name" style="background: white;text-align: right" ng-value="myInfo.name" ng-readonly="!isEdit" type="text" class="widthSize"/>
+      </label>
+
+      <label class="item item-input">
+        <span class="input-label"><strong>密码</strong></span>
+        <input ng-model="myInfo.password" style="background: white;text-align: right" ng-value="password" ng-readonly="!isEdit" type="password" class="widthSize"/>
+      </label>
+
+      <!--<div class="row item  item-icon-right widthSize">-->
+        <label class="item item-input">
+          <span class="input-label"><strong>手机号</strong></span>
+          <input  ng-model="myInfo.tel" style="background: white;text-align: right" ng-value="myInfo.tel" ng-readonly="!isEdit"  class="widthSize"/>
+        </label>
+
+      <label class="item item-input">
+          <span class="input-label"><strong>年龄</strong></span>
+          <input ng-model="myInfo.age" style="background: white;text-align: right" ng-value="myInfo.age" ng-readonly="!isEdit" class=" widthSize"/>
+      </label>
+
+      <div class="item item-input">
+      {{myInfo.introduce}}
       </div>
 
 
-
-
-      <div class="item  item-icon-right widthSize" >
-        <div class="row widthSize">
-          <div class="col-67 widthSize">
-            <h2><strong>年龄</strong></h2>
-          </div>
-          <div  class="col-33 infoCol widthSize">
-
-          </div>
-        </div>
-
-      </div>
-
-      <div class="item  item-icon-right widthSize" >
-        <div class="row widthSize">
-          <div class="col-67 widthSize">
-            <h2><strong>简介</strong></h2>
-          </div>
-          <div  class="col-33 infoCol widthSize">
-
-          </div>
-        </div>
-
-      </div>
-
-
-    </div>
-
+     <a ng-show="isEdit"  class="button button-block button-positive" ng-click="submitInfo()">保存</a>
+     <input ng-show="isEdit" type="reset" value="重置" class="button button-block button-positive" ng-click="edit()"/>
+    </form>
   </ion-content>
 </ion-view>

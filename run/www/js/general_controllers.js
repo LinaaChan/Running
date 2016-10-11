@@ -1,11 +1,17 @@
 angular.module('starter.generalController', ['ngResource'])
   .controller('AppCtrl', ['$scope', '$ionicModal', '$timeout', 'getWeather', 'locals', '$state',
-    'signServ', '$ionicPopup', '$rootScope',
-    function ($scope, $ionicModal, $timeout, getWeather, locals, $state, signServ, $ionicPopup, $rootScope) {
+    'signServ', '$ionicPopup', '$rootScope','userInfoDataServ',
+    function ($scope, $ionicModal, $timeout, getWeather, locals, $state, signServ, $ionicPopup, $rootScope,userInfoDataServ) {
 //初始化当前登录状态
 
     $scope.isLogged = false;
-      console.log($scope.isLogged );
+    userInfoDataServ.getUserInfo().then(function(data){
+      $scope.ava_default = data.photo;
+      console.log($scope.ava_default);
+        if(data.photo==null||data.photo==''){
+          $scope.ava_default = 'img/a1.jpg';
+        }
+      });
 //获取当前缓存
       $scope.MyName = locals.get('username', '');
 

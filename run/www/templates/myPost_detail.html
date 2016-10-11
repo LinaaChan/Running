@@ -1,0 +1,58 @@
+<ion-view view-title="详情">
+<!--具体的帖子详情-->
+  <ion-content>
+    <div class="list">
+      <div class="item item-text-wrap" >
+        <div class="row" >
+          <div class="col-33">
+            <a style="background-color: transparent;border: none" class="item item-avatar-left " menu-close>
+              <img ng-src="./img/avatar1.jpg">
+            </a>
+            <p>{{details.toAccount}}</p>
+          </div>
+          <div class="col-66" >
+            <br>
+            <p style="text-align: right"> {{details.time}}</p>
+          </div>
+        </div>
+        <div  class="row" >
+          <div class="col-33">
+            <a style="background-color: transparent;border: none"  class="item item-avatar-left " menu-close>
+
+            </a>
+          </div>
+          <div class="col-66" >
+            <a> 地点：{{details.address}}</a><br/>
+            <a> 距离：{{details.distance}}</a><br/>
+            <a> 人数：{{details.p_number}}</a><br/>
+            <a> 路线：{{details.route}}</a><br/>
+            <a> 活动时长：{{details.runtime}}</a><br/>
+            <a> 留言：{{details.description}}</a><br/>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--评论-->
+    <div class="list" style="margin-top: 0">
+      <div class="item item-divider">
+        评论
+      </div>
+      <div class="list">
+        <div class="item item-text-wrap item-avatar">
+          <img ng-src="./img/avatar1.jpg">
+          <h2>Venkman &nbsp;&nbsp;2016-10-09</h2>
+          This is a basic Card which contains an item that has wrapping text.
+          This is a basic Card which contains an item that has wrapping text.
+        </div>
+      </div>
+    </div>
+
+  </ion-content>
+  <!-- 采用弹出框的方式-->
+  <ion-footer-bar class="bar-clear" style="width: 100%">
+    <label style="width: 100%">
+      <input placeholder="发表评论" type="text" style="width: 80%;float: left"/>
+      <a class="button button-positive" style="width: 20%;float: right">提交</a>
+    </label>
+  </ion-footer-bar>
+</ion-view>

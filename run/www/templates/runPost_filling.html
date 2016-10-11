@@ -1,4 +1,5 @@
 <ion-view view-title="发布动态">
+
   <ion-content>
 
     <form name="form" class="list inset" novalidate>
@@ -39,17 +40,27 @@
           </select></label>
         <label class="item item-input">
           <span class="input-label">持续时长(min)</span>
-          <input type="number" ng-model="runInfoData.timeLast"></label>
+          <input type="number" ng-model="runInfoData.timeLast">
+        </label>
         <label class="item item-input">
           <span class="input-label">留言</span>
-         <textarea cols="20" rows="4" ng-model="runInfoData.note"></textarea></label>
+          <textarea cols="20" rows="4" ng-model="runInfoData.note"></textarea>
+        </label>
+        <label class="item item-input" style="color: #888888">
+         点击地图选择路线，最多可选5个点
+        </label>
       </div>
 
+
+     <div  style="width:100%; height: 250px;" id="container"></div>
+
+      <div  style="margin: 5px;">
+        <button class="button button-block button-positive" ng-click="upload()">
+          发布
+        </button>
+
+      </div>
     </form>
-    <div style="margin: 5px;">
-      <button class="button button-block button-positive" ng-click="upload()">
-       发布
-      </button>
-    </div>
+
 
 </ion-view>

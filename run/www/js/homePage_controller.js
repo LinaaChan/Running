@@ -2,9 +2,13 @@ angular.module('starter.homeCtrl', ['ngResource'])
 
 .controller('HomeCtrl',['$scope','homeDataServ','$resource','locals','$rootScope','$state','signServ','$ionicPopup','$http',
     function($scope,homeDataServ,$resource,locals,$rootScope,$state, signServ,$ionicPopup,$http){
-
+   /*   $rootScope.$on('$locationChangeSuccess',function(){//返回前页时，刷新前页
+        console.log('loactionchanged');
+        parent.location.reload();
+      });*/
     $scope.hasmore=true;
       var page = 1;
+     $scope.listInfo=[];
     homeDataServ.getIndex(1).then(function(data){
       $scope.listInfo =  data.array;
     });

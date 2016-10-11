@@ -96,27 +96,4 @@ angular.module('starter.services', ['ngResource'])
 
 
 
-  //更新用户信息接口
-  .factory('updateInfoServ', ['$resource', 'ip', 'locals','$state',function ($resource, ip,locals,state) {
-    var updateInf = $resource(ip + 'register.php?act=update');
-    return {
-          updateUserInfo : function(username,tel,age,intro,school){
-            var result = updateInf.save({name:username, tel: tel,age:age,introduce:intro,school:school},
-              function (data) {
-                alert('修改成功！');
-                $state.go('app.home');
-              }, function (err) {
-                alert('修改失败!');
-                $state.go('app.home')
-              })
-          },
-      getUserInfo : function(){
-        //获取用户信息
-        var user = locals.get('username');
-        var password = locals.get('password');
-      }
-    }
-
-  }])
-
 
