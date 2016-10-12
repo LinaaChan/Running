@@ -11,7 +11,7 @@ angular.module('starter.generalController', ['ngResource'])
         if(data.photo==null||data.photo==''){
           $scope.ava_default = 'img/a1.jpg';
         }
-      });
+    });
 //获取当前缓存
       $scope.MyName = locals.get('username', '');
 
@@ -19,9 +19,12 @@ angular.module('starter.generalController', ['ngResource'])
       $rootScope.$on("NewData", function (event, update_name) {
         $scope.MyName = update_name;
       });
-//
- $rootScope.$on("NewStatus", function (event, update_status) {
-   $scope.isLogged = update_status;
+//如果用户头像上传成功，更新menu
+      $rootScope.$on("NewAva", function (event, update_name) {
+        $scope.ava_default = update_name;
+      });
+      $rootScope.$on("NewStatus", function (event, update_status) {
+           $scope.isLogged = update_status;
     });
 
 if(!$scope.isLogged){
@@ -83,6 +86,7 @@ if(!$scope.isLogged){
          locals.set('username','');
          locals.set('password','');
          $rootScope.$broadcast("NewData", '');
+         $rootScope.$broadcast("NewAva", 'img/a1.jpg');
          $rootScope.$broadcast("NewStatus", false);
          alert('注销成功');
        }else{

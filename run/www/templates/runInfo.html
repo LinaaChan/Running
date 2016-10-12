@@ -36,7 +36,7 @@
       </div>
     </div>
 <!--评论-->
-   <!-- <div class="list" style="margin-top: 0">
+    <div class="list" style="margin-top: 0" ng-if="hasRemark">
       <div class="item item-divider">
         评论
       </div>
@@ -46,7 +46,8 @@
           <h2>{{remark.account}} &nbsp;&nbsp;{{remark.time}}</h2>
          {{remark.content}}
       </div>
-    </div>-->
+    </div>
+    <p ng-if="!hasRemark" style="text-align: center">--还没有评论哦--</p>
   </ion-content>
 
   <script id="my-modal.html" type="text/ng-template">

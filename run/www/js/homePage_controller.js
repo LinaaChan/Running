@@ -6,7 +6,7 @@ angular.module('starter.homeCtrl', ['ngResource'])
         console.log('loactionchanged');
         parent.location.reload();
       });*/
-    $scope.hasmore=true;
+      $scope.hasmore=true;
       var page = 1;
      $scope.listInfo=[];
     homeDataServ.getIndex(1).then(function(data){
@@ -104,16 +104,31 @@ angular.module('starter.homeCtrl', ['ngResource'])
 
      //获取详情
       $scope.goToDetail = function(id){
-        $rootScope.$on("NewStatus", function (event, update_status) {
+     /*   $rootScope.$on("NewStatus", function (event, update_status) {
           $scope.isLogged = update_status;
-        });
-        if(locals.get('username','')!=''|| $scope.isLogged){
-          $state.go('app.runInfo',{'infoId':id})
-        }else{
+        });*/
+        //if(locals.get('username','')!=''|| $scope.isLogged){
+          $state.go('app.runInfo',{'infoId':id});
+      /*  }else{
           $scope.showPopup();
-        }
+        }*/
 
-      }
+      };
 
+       //天气插件
+      (function(T,h,i,n,k,P,a,g,e){g=function(){P=h.createElement(i);a=h.getElementsByTagName(i)[0];P.src=k;P.charset="utf-8";P.async=1;a.parentNode.insertBefore(P,a)};T["ThinkPageWeatherWidgetObject"]=n;T[n]||(T[n]=function(){(T[n].q=T[n].q||[]).push(arguments)});T[n].l=+new Date();if(T.attachEvent){T.attachEvent("onload",g)}else{T.addEventListener("load",g,false)}}(window,document,"script","tpwidget","//widget.thinkpage.cn/widget/chameleon.js"))
+      tpwidget("init", {
+        "flavor": "bubble",
+        "location": "WTW3SJ5ZBJUY",
+        "geolocation": "disabled",
+        "position": "bottom-right",
+        "margin": "50px 30px",
+        "language": "zh-chs",
+        "unit": "c",
+        "theme": "chameleon",
+        "uid": "U9BAE1BB4E",
+        "hash": "b09cdbe6156d086fa3fe32583cadaa6e"
+      });
+      tpwidget("show");
   }])
  ;

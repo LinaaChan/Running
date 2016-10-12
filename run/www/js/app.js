@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.homeCtrl', 'starter.runCtrl',
-  'starter.generalController', 'starter.weaCtrl','logService','homeService','runInfoService','Directives','myPostInfoCtrls'])
+  'starter.generalController', 'starter.weaCtrl','logService','homeService','runInfoService','Directives','myPostInfoCtrls','postService'])
 
   .run(function ($ionicPlatform,$cordovaToast,$rootScope, $location, $timeout, $ionicHistory,$ionicPopup,$templateCache ) {
     $ionicPlatform.ready(function () {
@@ -59,6 +59,32 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
     $httpProvider.defaults.useXDomain = true;
     $httpProvider.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=utf-8";
 //	delete $httpProvider.defaults.headers.common['X-Requested-With'];
+
+
+   //登录拦截
+   /* $httpProvider.interceptors.push(function ($q, $location, User, $rootScope) {
+      return {
+        'request': function (config) {
+          config.headers = config.headers || {};
+          if (User.getToken()) {
+            config.headers.Authorization = 'Bearer ' + User.getToken();
+          }
+          return config;
+        },
+        'responseError': function (response) {
+          if (response.status === 401 || response.status === 403) {
+            //如果之前登陆过
+            if (User.getToken()) {
+              $rootScope.$broadcast('unAuthenticed');
+            }
+          }
+          return $q.reject(response);
+        }
+      };
+    });
+
+*/
+
   })
 
   .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider,$httpProvider) {
@@ -76,7 +102,7 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
 
       .state('app', {
         url: '/app',
-        abstract: true,
+        abstract: true,//不完全显示页面
         templateUrl: 'templates/menu.html',
         controller: 'AppCtrl'
       })
@@ -91,6 +117,7 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
       })
       .state('app.userInfo', {
         url: '/userInfo',
+     //   cache:'false',
         views: {
           'menuContent': {
             templateUrl: 'templates/userInfo.html',
@@ -154,21 +181,11 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
         views: {
           'menuContent': {
             templateUrl: 'templates/home.html',
-            controller: 'HomeCtrl',
-            cache:'false'
+            controller: 'HomeCtrl'
           }
         }
       })
 
-    /*  .state('app.single', {
-        url: '/playlists/:playlistId',
-        views: {
-          'menuContent': {
-            templateUrl: 'templates/playlist.html',
-            controller: 'PlaylistCtrl'
-          }
-        }
-      })*/
       .state('app.runInfo', {
         url: '/run/:infoId',
         views: {

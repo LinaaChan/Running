@@ -1,9 +1,7 @@
 angular.module('homeService', ['ngResource'])
 
   .factory('homeDataServ',['$resource','ip','$http','$q',function($resource,ip,$http,$q){
-
     var indexUrl = ip + 'index.php';
-
     return {
     //  getAllInfoUrl :  ip + 'getinfo.php?act=getUserActivity',
       getIndex : function(page){
@@ -15,9 +13,9 @@ angular.module('homeService', ['ngResource'])
             'page':page
           }
         }).success(function(data,status,headers,config){
-          console.log(data);
           defer.resolve(data);
         }).error(function(data,status,headers,config){
+          alert('网络错误');
           defer.reject(data)
         });
         return defer.promise;

@@ -1,13 +1,13 @@
 angular.module('runInfoService', ['ngResource'])
 
-  .factory('runInfoDataServ',['$resource','ip','$http','$q','locals','$state','$window',
-    function($resource,ip,$http,$q,locals,$state,$window){
+  .factory('runInfoDataServ',['$resource','ip','$http','$q','locals','$state','$window','$ionicLoading','$timeout',
+    function($resource,ip,$http,$q,locals,$state,$window,$ionicLoading,$timeout){
 
     return{
       //发布动态的路由
       postRunInfoUrl:ip + 'activity.php?act=postActivity',
       postAction : function(runInfo){
-        console.log(runInfo);
+        $ionicLoading.show({template: '正在发布...'});
         $http.post(ip + 'activity.php?act=postActivity',{
           postTime : runInfo.date,
           address : runInfo.addr,
@@ -19,8 +19,12 @@ angular.module('runInfoService', ['ngResource'])
           runtime : runInfo.timeLast,
           time : runInfo.timeCurr
         }).success(function(data){
-          alert('发布成功！');
+          $timeout(function(){
+            $ionicLoading.hide();
+          },1000);
           $state.go('app.home');
+
+          //$state.go('app.home');
           //$window.location.href = 'index.html#/app/home'
         }).error(function(data){
           alert('系统错误');
@@ -42,7 +46,7 @@ angular.module('runInfoService', ['ngResource'])
         var defer = $q.defer();
         $http.get( ip +'getinfo.php?act=getActivityRemark',{params:{'a_id':id}})
           .success(function(data){
-            console.log(data);
+            console.log('评论'+data);
             defer.resolve(data);
           }).error(function(data){
             defer.resolve(data);
@@ -56,7 +60,7 @@ angular.module('runInfoService', ['ngResource'])
         }).success(function(data){
           console.log(data);
           alert('发布成功！');
-          $window.location.href = '/app/home'
+          location.reload();
         }).error(function(data){
           alert('系统错误');
         });
@@ -66,15 +70,14 @@ angular.module('runInfoService', ['ngResource'])
 
   }])
 
-  .factory('userInfoDataServ',['$resource','ip','$http','$q','locals','$state','$cordovaFileTransfer',
-    function($resource,ip,$http,$q,locals,$state,$cordovaFileTransfer){
+  .factory('userInfoDataServ',['$resource','ip','$http','$q','locals','$state','$cordovaFileTransfer','$rootScope','$ionicLoading',
+    function($resource,ip,$http,$q,locals,$state,$cordovaFileTransfer,$rootScope,$ionicLoading){
       return {
+        //上传头像
         uploadAva  : function(imgUrl) {
-          //图片上传upImage（图片路径）
-          //http://ngcordova.com/docs/plugins/fileTransfer/  资料地址
+          $ionicLoading.show({template: '正在上传头像...'});
           var myDate = new Date().toLocaleString();
           var imgName=locals.get('username','')+myDate;
-          alert('默认路径名:'+imgName);
           var url = ip+'photoUpload.php';
            var options = new FileUploadOptions();
            options.fileKey = "file";
@@ -83,7 +86,12 @@ angular.module('runInfoService', ['ngResource'])
 
             $cordovaFileTransfer.upload(url, imgUrl, options)
               .then(function (result) {
-                alert(result);
+                $timeout(function(){
+                  $ionicLoading.hide();
+                  $rootScope.$broadcast('NewAva',imgUrl);
+                  //$state.go("app.home", {}, { reload: true });
+                },1000);
+
                //success
               }, function (err) {
               //fail

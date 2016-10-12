@@ -88,7 +88,13 @@ angular.module('starter.runCtrl', [])
     //获取当天动态的相关评论
     runInfoDataServ.getRemarks($stateParams.infoId).then(function(data){
       console.log(data);
-      $scope.remarks = data.array;
+      $scope.hasRemark = false;
+      if(data!=null||data!=''){
+        console.log(data);
+        $scope.remarks = data.array;
+        $scope.hasRemark = true;
+      }
+      console.log($scope.hasRemark);
     });
 
 
@@ -137,8 +143,8 @@ angular.module('starter.runCtrl', [])
     }])
 
   //用户详细信息
-  .controller('userInfoCtrl',['$scope','locals','$ionicActionSheet','$cordovaCamera','userInfoDataServ','$cordovaImagePicker','$rootScope',
-    function($scope,locals,$ionicActionSheet,$cordovaCamera,userInfoDataServ, $cordovaImagePicker,$rootScope) {
+  .controller('userInfoCtrl',['$scope','locals','$ionicActionSheet','$cordovaCamera','userInfoDataServ','$cordovaImagePicker','$rootScope','$ionicPopup',
+    function($scope,locals,$ionicActionSheet,$cordovaCamera,userInfoDataServ, $cordovaImagePicker,$rootScope,$ionicPopup) {
 
       userInfoDataServ.getUserInfo().then(function(data){
         console.log(data);
@@ -187,7 +193,7 @@ angular.module('starter.runCtrl', [])
         var takePhoto = function () {
           var options = {
             //这些参数可能要配合着使用，比如选择了sourcetype是0，destinationtype要相应的设置
-            quality: 20,                                            //相片质量0-100
+            quality: 50,                                            //相片质量0-100
             destinationType: Camera.DestinationType.FILE_URI,        //返回类型：DATA_URL= 0，返回作为 base64 編碼字串。 FILE_URI=1，返回影像档的 URI。NATIVE_URI=2，返回图像本机URI (例如，資產庫)
             sourceType: Camera.PictureSourceType.CAMERA,             //从哪里选择图片：PHOTOLIBRARY=0，相机拍照=1，SAVEDPHOTOALBUM=2。0和1其实都是本地图库
             allowEdit: false,                                        //在选择之前允许修改截图
@@ -201,7 +207,8 @@ angular.module('starter.runCtrl', [])
           };
 
           $cordovaCamera.getPicture(options).then(function (imageData) {
-            $scope.myInfo.photo = imageData;
+            //$scope.myInfo.photo = imageData;
+            $scope.showConfirm(imageData);
           }, function (err) {
           });
 
@@ -210,7 +217,7 @@ angular.module('starter.runCtrl', [])
 //调用相册
       var pickImage = function () {
         var options = {
-          maximumImagesCount: 1,
+          maximumImagesCount: 2,
           width: 800,
           height: 800,
           quality: 50
@@ -218,19 +225,31 @@ angular.module('starter.runCtrl', [])
 
         $cordovaImagePicker.getPictures(options)
           .then(function (results) {
-            $scope.myInfo.photo = results[0];
-            //userInfoDataServ.uploadAva(results[0]);
+            $scope.showConfirm(results[0]);
+            //$scope.myInfo.photo = results[0];
+            //跳出确认框，选择是否上传图片
           }, function (error) {
           });
       }
 
+      $scope.showConfirm = function(imgUrl) {
+        var confirmPopup = $ionicPopup.confirm({
+          title: '确认上传',
+          templateUrl: 'uploadImgTemp.html'
+        });
+        confirmPopup.then(function(res) {
+          if(res) {
+            userInfoDataServ.uploadAva(imgUrl);
+          } else {
+            console.log('You are not sure');
+          }
+        });
+      };
+
 
       $scope.submitInfo = function(){
         $scope.edit();
-        console.log($scope.myInfo);
-        //上传信息
         userInfoDataServ.updateUserInfo($scope.myInfo);
-        userInfoDataServ.uploadAva($scope.myInfo.photo);
       }
 
 

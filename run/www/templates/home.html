@@ -1,10 +1,9 @@
 <ion-view view-title="最新动态">
-
   <ion-content  scroll="true" overflow-scroll="true"  class="padding" >
     <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()">
     </ion-refresher>
 
-    <div class="list" ng-repeat="playlist in listInfo" ng-click="goToDetail(playlist.a_id)">
+    <div class="list"  ng-repeat="playlist in listInfo" ng-click="goToDetail(playlist.a_id)">
 
       <div class="item item-text-wrap" >
         <div class="row" >
@@ -31,13 +30,13 @@
           <div class="col-66" >
             <a> 距离：{{playlist.distance}}</a><br/>
             <a> 人数：{{playlist.p_number}}</a><br/>
-            <a> 路线：{{playlist.route}}</a><br/>
+            <!--<a> 路线：{{playlist.route}}</a><br/>-->
             <a> 留言：{{playlist.description}}</a><br/>
           </div>
         </div>
       </div>
     </div>
-
+    <p ng-if="!hasmore" style="text-align: center">--已经到底啦--</p>
        <ion-infinite-scroll ng-if="hasmore" on-infinite="loadMore()" distance="1%">
        </ion-infinite-scroll>
 
