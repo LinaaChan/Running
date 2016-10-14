@@ -80,3 +80,27 @@ input{
   overflow-y:hidden;
   resize:none;
 }
+
+/*
+.blur {
+  filter: url(blur.svg#blur); /!* FireFox, Chrome, Opera *!/
+  -webkit-filter: blur(10px); /!* Chrome, Opera *!/
+  -moz-filter: blur(10px);
+  -ms-filter: blur(10px);
+  filter: blur(10px);
+  filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false); /!* IE6~IE9 *!/
+}
+*/
+
+
+.menuList{
+  background: transparent;
+  border: transparent;
+  color: #66677c;
+}
+.to{
+  width:100px;
+  height:100px;
+  border-radius:100px
+}
+

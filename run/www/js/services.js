@@ -48,12 +48,13 @@ angular.module('starter.services', ['ngResource'])
   }])
 
   /*登录服务接口*/
-  .factory('signServ', ['$resource', 'ip', 'locals','$state','$http','$rootScope','userInfoDataServ',function ($resource, ip,locals,$state,$http,$rootScope,userInfoDataServ) {
+  .factory('signServ', ['$resource', 'ip', 'locals','$state','$http','$rootScope','userInfoDataServ','$ionicPopup','$location',
+    function ($resource, ip,locals,$state,$http,$rootScope,userInfoDataServ,$ionicPopup,$location) {
     //登录接口
     var sign = $resource(ip + 'register.php?act=login');
     return{
       //登录函数（参数：用户名，密码）
-      singn : function(username,password){
+      singn : function(username,password,url){
         $http.post(ip + 'register.php?act=login',{account:username,password:password})
           .success(function(data){
             if(data==1){
@@ -62,6 +63,10 @@ angular.module('starter.services', ['ngResource'])
               locals.set('password', password);
               $rootScope.$broadcast("NewStatus",true);
               //alert('登录成功！');
+              $ionicPopup.alert({
+                title: '提示',
+                template: '登录成功'
+              });
               userInfoDataServ.getUserInfo().then(function(data){
                 var ava_photo =  data.photo;
                 if(data.photo==null||data.photo==''){
@@ -69,12 +74,21 @@ angular.module('starter.services', ['ngResource'])
                 }
                 $rootScope.$broadcast("NewAva",ava_photo);
               });
-              $state.go('app.home');
+              console.log(url);
+              $location.path(url);
             }else{
-              alert('账户或用户名错误！');
+             // alert('账户或用户名错误！');
+              $ionicPopup.alert({
+                title: '提示',
+                template: '账户或用户名错误！'
+              });
             }
           }).error(function(){
-            alert('系统错误');
+           // alert('系统错误');
+            $ionicPopup.alert({
+              title: '提示',
+              template: '系统错误！'
+            });
             $state.go('app.home');
           });
 
@@ -102,52 +116,24 @@ angular.module('starter.services', ['ngResource'])
   }])
 
 //登录拦截模块
-.factory('signBlock',['$state','locals','ip','$location','$ionicPopup','$scope',
-    function($state,locals,ip,$location,$scope){
+.factory('signBlock',['$state','locals','ip','$location','$http','$q',
+    function($state,locals,ip,$location,$http,$q){
     return{
       //检验当前用户是否登录（是否合法），若没有，则跳转到登录页面，若已登录，则继续动作（对用户透明）
       blockTest : function(){
         var username = locals.get('username','');
+        console.log(username);
         var password = locals.get('password','');
-        var current_url = $location.path();
-        var myPopup;
-        //登录框
-        $scope.loginData ={};
-        $scope.showPopup = function () {
-          myPopup = $ionicPopup.show({
-            templateUrl: 'templates/loginPage.html',
-            title: '登录',
-            scope: $scope,
-            buttons: [
-              {text: '取消'},
-              {
-                text: '<b>确定</b>',
-                type: 'button-positive',
-                onTap: function (e) {
-                  if($scope.loginData.username==''||$scope.loginData.password==''||$scope.loginData.username==undefined||$scope.loginData.password==undefined){
-                    alert('用户名/密码不能为空');
-                  }else{
-                    signServ.singn($scope.loginData.username, $scope.loginData.password);
-                  }
-                }
-              }
-            ]
-          });
-        };
-        console.log('当前路径'+current_url);
+        console.log(password);
+        var defer = $q.defer();
         $http.post(ip + 'register.php?act=login',{account:username,password:password})
           .success(function(data){
-            //登录成功
-            if(data==1){
-              $location.path(current_url);
-            }else{
-              //登录失败,需重新登陆
-              $scope.showPopup();
-            }
-          }).error(function(){
-            alert('系统错误');
-            $state.go('app.home');
+            console.log(data);
+            defer.resolve(data);
+          }).error(function(data){
+            defer.resolve(data);
           });
+        return defer.promise;
       }
     }
 

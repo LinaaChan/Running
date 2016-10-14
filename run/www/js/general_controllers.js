@@ -1,14 +1,14 @@
 angular.module('starter.generalController', ['ngResource'])
   .controller('AppCtrl', ['$scope', '$ionicModal', '$timeout', 'getWeather', 'locals', '$state',
-    'signServ', '$ionicPopup', '$rootScope','userInfoDataServ',
-    function ($scope, $ionicModal, $timeout, getWeather, locals, $state, signServ, $ionicPopup, $rootScope,userInfoDataServ) {
+    'signServ',  '$rootScope','userInfoDataServ','signBlock','$ionicPopup','$location',
+    function ($scope, $ionicModal, $timeout, getWeather, locals, $state, signServ, $rootScope,userInfoDataServ,signBlock,$ionicPopup,$location) {
 //初始化当前登录状态
 
     $scope.isLogged = false;
     userInfoDataServ.getUserInfo().then(function(data){
       $scope.ava_default = data.photo;
       console.log($scope.ava_default);
-        if(data.photo==null||data.photo==''){
+        if(data.photo==null||data.photo==''||data.photo==undefined){
           $scope.ava_default = 'img/a1.jpg';
         }
     });
@@ -42,42 +42,65 @@ if(!$scope.isLogged){
       });
 
 
-      //获取用户信息，跳转前判断是否已登录
-      var myPopup;
+      //获取用户信息
       $scope.getInfo = function () {
-        var username = locals.get('username', '');
-        if (username == null || username == '' || username == 'undefined') {
-          $scope.showPopup();
-        } else {
-          $state.go('app.userInfo',{userID:username});
-        }
+        signBlock.blockTest().then(function(data){
+          if(data==1){
+            $state.go('app.userInfo');
+          }else{
+            $scope.showPopup('app/userInfo');
+          }
+        })
+      }
+      //获取用户发布过的动态
+      $scope.getPosts= function () {
+        signBlock.blockTest().then(function(data){
+          if(data==1){
+            $state.go('app.myPosts');
+          }else{
+            $scope.showPopup('app/myPosts');
+          }
+        })
+      }
+ //获取用户发布过的评论
+      $scope.getRemark = function () {
+        signBlock.blockTest().then(function(data){
+          if(data==1){
+            $state.go('app.myRemarks');
+          }else{
+            $scope.showPopup('app/myRemarks');
+          }
+        })
       }
 
-
-      //登录函数
+      //登录模块
       $scope.loginData ={};
-     $scope.showPopup = function () {
+      var myPopup;
+      $scope.showPopup = function (url) {
         myPopup = $ionicPopup.show({
           templateUrl: 'templates/loginPage.html',
           title: '登录',
           scope: $scope,
           buttons: [
             {text: '取消'},
-            // {text: '注册'},
             {
               text: '<b>确定</b>',
               type: 'button-positive',
               onTap: function (e) {
-                if($scope.loginData.username==''||$scope.loginData.password==''){
+                if($scope.loginData.username==''||$scope.loginData.password==''||$scope.loginData.username==undefined||$scope.loginData.password==undefined){
                   alert('用户名/密码不能为空');
-                }else{
-                  signServ.singn($scope.loginData.username, $scope.loginData.password);
+                }else{signServ.singn($scope.loginData.username, $scope.loginData.password,url);
                 }
               }
             }
           ]
         });
       };
+      //跳到注册模块
+      $scope.goRegister = function () {
+        myPopup.close();
+        $state.go('app.register');
+      }
 
     //注销
       $scope.doExit = function () {
@@ -88,23 +111,26 @@ if(!$scope.isLogged){
          $rootScope.$broadcast("NewData", '');
          $rootScope.$broadcast("NewAva", 'img/a1.jpg');
          $rootScope.$broadcast("NewStatus", false);
-         alert('注销成功');
+         $ionicPopup.alert({
+           title: '提示',
+           template: '注销成功'
+         });
        }else{
-         alert('你还未登录哦！');
+         $ionicPopup.alert({
+           title: '提示',
+           template: '你还未登录哦！'
+         });
        }
       }
       $scope.goRegister = function () {
         myPopup.close();
         $state.go('app.register');
       }
-
-
-
     }])
 
   //注册页面控制器
-  .controller('registerCtrl', ['$scope', 'registerServ', '$state', 'locals', '$resource', '$rootScope','$http','$q',
-    function ($scope, registerServ, $state, locals, $resource, $rootScope,$http,$q) {
+  .controller('registerCtrl', ['$scope', 'registerServ', '$state', 'locals', '$resource', '$rootScope','$http','$ionicPopup',
+    function ($scope, registerServ, $state, locals, $resource, $rootScope,$http,$ionicPopup) {
       $scope.signup = {};
       $scope.submitted = false;
       $scope.signupForm = function(form) {
@@ -116,13 +142,18 @@ if(!$scope.isLogged){
            locals.set('password', $scope.signup.password);
            $rootScope.$broadcast("NewData",  $scope.signup.name);
            $rootScope.$broadcast("NewStatus",true);
-          alert('注册成功！');
+              $ionicPopup.alert({
+                title: '提示',
+                template: '欢迎成为我们的一员！'
+              });
            $state.go('app.home');
            }).error( function (err) {
-           alert('注册失败');
+              $ionicPopup.alert({
+                title: '提示',
+                template: '注册失败'
+              });
            $state.go('app.home')
            })
-          // Submit as normal
         } else {
           console.log(form.submitted);
           form.submitted = true;
@@ -130,3 +161,5 @@ if(!$scope.isLogged){
       }
 
     }])
+
+

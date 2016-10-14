@@ -1,6 +1,6 @@
 <ion-side-menus enable-menu-with-back-views="false">
   <ion-side-menu-content>
-    <ion-nav-bar class="bar-positive" title="最新动态">
+    <ion-nav-bar class="bar-positive">
       <ion-nav-back-button>
       </ion-nav-back-button>
 
@@ -9,33 +9,38 @@
         </button>
       </ion-nav-buttons>
     </ion-nav-bar>
-    <!--主页面内容 关键的菜单内容name要对应到是菜单内容的页面-->
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
 
-  <ion-side-menu side="left" style="background:transparent;background-image: url('./img/sidemenu_bg2.jpg');">
-    <ion-header-bar style="background: transparent;border:none">
+  <ion-side-menu side="left" style="background:transparent;">
+  <!--  <ion-header-bar style="background: transparent;border:none">
 
-    </ion-header-bar>
+    </ion-header-bar>-->
     <ion-content>
       <div style="background-color: transparent;"  class="list">
+          <div style="background-image: url('img/sidemenu_bg6.PNG');">
+            <div style="z-index: 9999">
         <a style="background-color: transparent;border: transparent" class="item item-avatar-left " menu-close ng-click="getInfo()">
-          <img ng-src="{{ava_default}}">
-          <p style="color: white;font-size: 18px;font-weight: bold">{{MyName}}
+          <img style="margin-top: 40px;" ng-src="{{ava_default}}">
+          <p style="margin-top: 40px;color: white;font-size: 18px;font-weight: bold">{{MyName}}
             <!--{{userData.userName}}-->
-            <img class="title" style="float:right;" ng-src="{{weather_imgUrl}}">
           </p>
-          <p style="float:right;color: white" >
+          <div style="float:right;margin-top: -10px">
+          <img class="title"  ng-src="{{weather_imgUrl}}">
+          <p style="color: white" >
             {{weather.temperature+'℃'}} &nbsp;{{weather.text}}
           </p>
-
-
+          </div>
         </a>
-        <a style="background: transparent;;border: transparent;color: #f2f2f2" class="item item-icon-left " menu-close href="#/app/home">
-          <i class="icon ion-ios-home"></i> 我的主页
+            </div>
+          </div>
+
+        <div>
+        <a class="item item-icon-left menuList"  menu-close href="#/app/home">
+          <i class="icon ion-ios-home menuList"></i> 我的主页
         </a>
-        <a style="background: transparent;;border: transparent;color: #f2f2f2" class="item item-icon-left" menu-close href="#/app/search">
-        <i class="icon ion-ribbon-a "></i> 我的参与
+        <a class="item item-icon-left menuList" menu-close ng-click="getRemark()">
+        <i class="icon ion-ribbon-a menuList"></i> 我的参与
         </a>
         <!--<a style="background: transparent;;border: transparent;color: #f2f2f2"  class="item item-icon-left " menu-close href="#/app/search">-->
            <!--<i class="icon ion-images"></i> 我的相册-->
@@ -43,12 +48,13 @@
         <!--<a style="background-color: transparent;;border: transparent;color: #f2f2f2" class="item item-icon-left positive-bg" menu-close href="#/app/search">-->
           <!--<i class="icon ion-android-star"></i> 收藏路线-->
         <!--</a>-->
-        <a style="background-color: transparent;;border: transparent;color: #f2f2f2" class="item item-icon-left positive-bg" menu-close ng-href="#/app/weather">
-          <i class="icon ion-android-star"></i> 天气预报
+        <a class="item item-icon-left positive-bg menuList" menu-close ng-href="#/app/weather">
+          <i class="icon ion-android-star menuList"></i> 天气预报
         </a>
-        <a style="background-color: transparent;;border: transparent;color: #f2f2f2" class="item item-icon-left positive-bg" menu-close ng-href="#/app/myPosts">
-          <i class="icon ion-checkmark-round"></i> 我的发布
+        <a class="item item-icon-left positive-bg menuList" menu-close ng-click="getPosts()">
+          <i class="icon ion-checkmark-round menuList"></i> 我的发布
         </a>
+        </div>
         <!--<a style="background-color: transparent;;border: transparent;color: #f2f2f2" class="item item-icon-left positive-bg" menu-close href="#/app/search">-->
           <!--<i class="icon ion-navicon-round"></i> 跑后感-->
         <!--</a>-->

@@ -1,11 +1,17 @@
-<ion-view view-title="我的信息">
+<ion-view view-title="我的信息" >
+
   <ion-nav-buttons side="right">
     <a class="button button-clear icon  ion-compose" ng-if="!isEdit" ng-click="edit()"></a>
   </ion-nav-buttons>
-  <ion-content>
+  <ion-content class="has-header">
     <form class="list">
-      <div class="item item-icon-right">
-        <div class="row widthSize item item-icon-right">
+      <div class="item" style="text-align: center">
+        <img class="to"  ng-src="{{myInfo.photo}}" ng-click="addAttachment()">
+        <p>{{myInfo.introduce}}
+          <buuton ng-click="showModel()" class="icon-only icon ion-edit"></buuton>
+        </p>
+        <!-- 头像置于中间-->
+        <!--<div class="row widthSize item item-icon-right">
           <div class="col-33 myInfoAvatar1 widthSize">
             <br>
             <a> <strong>头像</strong></a>
@@ -13,8 +19,11 @@
           <div class="col-67 infoCol widthSize" ng-click="addAttachment()">
             <img  style="height: 60px;width: 60px;" ng-src="{{myInfo.photo}}" >
           </div>
-        </div>
+        </div>-->
       </div>
+      <!--<div class="item item-input" style="text-align: center">-->
+        <!--{{myInfo.introduce}}-->
+      <!--</div>-->
 
       <label class="item item-input">
         <span class="input-label"><strong>用户名</strong></span>
@@ -42,13 +51,34 @@
           <input ng-model="myInfo.age" style="background: white;text-align: right" ng-value="myInfo.age" ng-readonly="!isEdit" class=" widthSize"/>
       </label>
 
-      <div class="item item-input">
-      {{myInfo.introduce}}
-      </div>
+
 
      <a ng-show="isEdit"  class="button button-block button-positive" ng-click="submitInfo()">保存</a>
-     <input ng-show="isEdit" type="reset" value="重置" class="button button-block button-positive" ng-click="edit()"/>
+     <input ng-show="isEdit" type="reset" value="取消" class="button button-block button-positive" ng-click="edit()"/>
     </form>
   </ion-content>
+  <script id="my-modal.html" type="text/ng-template">
 
+    <div class="modal">
+      <ion-header-bar class="bar-positive">
+        <div class="buttons">
+          <button class="button icon ion-ios-close-empty  button-light button-clear" ng-click="closeModal()"></button>
+        </div>
+        <h1 class="title">我的简介</h1>
+        <div class="buttons">
+          <button class="button icon ion-ios-checkmark-empty button-light button-clear" ng-click="sendIntro()"></button>
+        </div>
+      </ion-header-bar>
+      <ion-content>
+        <div class="list card">
+
+          <label class="item">
+            <textarea placeholder="140字" ng-model="text" ng-change="textChange(text)" class="remarkInput" ></textarea>
+            <p style="text-align: right"> {{textLength}}</p>
+          </label>
+
+        </div>
+      </ion-content>
+    </div>
+  </script>
 </ion-view>

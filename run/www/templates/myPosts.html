@@ -1,24 +1,20 @@
 <ion-view view-title="我的发布">
-
-  <ion-content  scroll="true" overflow-scroll="true"  class="padding" >
+  <ion-content  scroll="true" overflow-scroll="true"  class="padding has-header" >
     <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()">
     </ion-refresher>
 
-    <div class="list" ng-repeat="playlist in listInfo" ng-click="goToDetail(playlist.a_id)">
+    <ion-list  ng-repeat="playlist in listInfo" ng-click="goToDetail(playlist.a_id)">
 
-      <div class="item item-text-wrap" >
+      <ion-item class="item item-text-wrap" >
         <div class="row" >
           <div class="col-33">
             <a style="background-color: transparent;border: none" class="item item-avatar-left " menu-close>
-              <img ng-src="./img/avatar1.jpg">
+              <img ng-src="playlist.photo">
             </a>
             <p>{{playlist.toAccount}}</p>
           </div>
           <div class="col-66" >
-
             <br>
-
-
             <p style="text-align: right"> {{playlist.time}}</p>
           </div>
         </div>
@@ -31,15 +27,18 @@
           <div class="col-66" >
             <a> 距离：{{playlist.distance}}</a><br/>
             <a> 人数：{{playlist.p_number}}</a><br/>
-            <a> 路线：{{playlist.route}}</a><br/>
+            <!--<a> 路线：{{playlist.route}}</a><br/>-->
             <a> 留言：{{playlist.description}}</a><br/>
           </div>
         </div>
-      </div>
-    </div>
-
-       <ion-infinite-scroll ng-if="hasmore" on-infinite="loadMore()" distance="1%">
-       </ion-infinite-scroll>
+        <ion-option-button class="button-assertive" ng-click="remove(playlist.a_id)">
+          Delete
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+    <p ng-if="!hasmore" style="text-align: center">--已经到底啦--</p>
+    <ion-infinite-scroll ng-if="hasmore" on-infinite="loadMore()" distance="1%">
+    </ion-infinite-scroll>
 
   </ion-content>
 

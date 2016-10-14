@@ -1,5 +1,11 @@
-<ion-view view-title="天气预报">
-  <ion-content>
+<ion-view view-title="天气预报" hide-back-button="true" hide-nav-bar="true">
+  <ion-header-bar  class="bar-positive">
+    <div class="buttons">
+      <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+    </div>
+    <h1 class="title">天气预报</h1>
+  </ion-header-bar>
+  <ion-content class="has-header">
 
     <iframe style="min-height: 200px;text-align: center;" src="http://www.thinkpage.cn/weather/weather.aspx?uid=U9BAE1BB4E&cid=CHSH000000&l=zh-CHS&p=SMART&a=0&u=C&s=1&m=0&x=1&d=3&fc=&bgc=&bc=&ti=0&in=0&li=" frameborder="0" scrolling="no" width="100%" height="200" allowTransparency="true"></iframe>
 

@@ -1,7 +1,7 @@
 angular.module('runInfoService', ['ngResource'])
 
-  .factory('runInfoDataServ',['$resource','ip','$http','$q','locals','$state','$window','$ionicLoading','$timeout',
-    function($resource,ip,$http,$q,locals,$state,$window,$ionicLoading,$timeout){
+  .factory('runInfoDataServ',['$resource','ip','$http','$q','locals','$state','$window','$ionicLoading','$timeout','$ionicPopup',
+    function($resource,ip,$http,$q,locals,$state,$window,$ionicLoading,$timeout,$ionicPopup){
 
     return{
       //发布动态的路由
@@ -19,13 +19,10 @@ angular.module('runInfoService', ['ngResource'])
           runtime : runInfo.timeLast,
           time : runInfo.timeCurr
         }).success(function(data){
+          $state.go('app.home');
           $timeout(function(){
             $ionicLoading.hide();
           },1000);
-          $state.go('app.home');
-
-          //$state.go('app.home');
-          //$window.location.href = 'index.html#/app/home'
         }).error(function(data){
           alert('系统错误');
         });
@@ -42,11 +39,11 @@ angular.module('runInfoService', ['ngResource'])
         return defer.promise;
       },
       //获得某一详情的评论
-      getRemarks : function(id){
+      getRemarks : function(id,page){
         var defer = $q.defer();
-        $http.get( ip +'getinfo.php?act=getActivityRemark',{params:{'a_id':id}})
+       ;
+        $http.get( ip +'getinfo.php?act=getActivityRemark',{params:{'a_id':id,'page':page}})
           .success(function(data){
-            console.log('评论'+data);
             defer.resolve(data);
           }).error(function(data){
             defer.resolve(data);
@@ -54,15 +51,16 @@ angular.module('runInfoService', ['ngResource'])
         return defer.promise;
       },
       postRemarks : function(id,content){
-        //remarkid为动态id
+        $ionicLoading.show({template: '正在上传评论...'});
         $http.post(ip + 'remark.php?act=remark&a_id='+id,{
           content : content
         }).success(function(data){
-          console.log(data);
-          alert('发布成功！');
-          location.reload();
+           location.reload();
         }).error(function(data){
-          alert('系统错误');
+          $ionicPopup.alert({
+            title: '提示',
+            template: '系统错误'
+          });
         });
       }
 
@@ -83,15 +81,11 @@ angular.module('runInfoService', ['ngResource'])
            options.fileKey = "file";
            options.fileName = imgUrl.substr(imgUrl.lastIndexOf('/') + 1);
            options.mimeType="image/jpeg";
-
             $cordovaFileTransfer.upload(url, imgUrl, options)
               .then(function (result) {
-                $timeout(function(){
-                  $ionicLoading.hide();
-                  $rootScope.$broadcast('NewAva',imgUrl);
+                location.reload();
+                 // $rootScope.$broadcast('NewAva',imgUrl);
                   //$state.go("app.home", {}, { reload: true });
-                },1000);
-
                //success
               }, function (err) {
               //fail
@@ -116,7 +110,7 @@ angular.module('runInfoService', ['ngResource'])
           return defer.promise;
         },
         updateUserInfo : function(newUserInfo){
-
+          $ionicLoading.show({template: '正在修改信息...'});
           $http.post(ip + 'updateinfo.php?act=update',{
             name : newUserInfo.name,
             tel : newUserInfo.tel,
@@ -124,7 +118,7 @@ angular.module('runInfoService', ['ngResource'])
             introduce : newUserInfo.introduce,
             school : '上海海事大学'
           }).success(function(data){
-            $state.go('app.home');
+           location.reload();
           }).error(function(data){
             alert('系统错误');
           });

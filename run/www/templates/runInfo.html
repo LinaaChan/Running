@@ -9,7 +9,7 @@
         <div class="row" >
           <div class="col-33">
             <a style="background-color: transparent;border: none" class="item item-avatar-left " menu-close>
-              <img ng-src="./img/avatar1.jpg">
+              <img ng-src=".{{details.toAccount}}">
             </a>
             <p>{{details.toAccount}}</p>
           </div>
@@ -40,14 +40,14 @@
       <div class="item item-divider">
         评论
       </div>
-
         <div ng-repeat="remark in remarks" class="item item-text-wrap item-avatar">
-          <img ng-src="./img/avatar1.jpg">
+          <img ng-src="{{remark.photo}}">
           <h2>{{remark.account}} &nbsp;&nbsp;{{remark.time}}</h2>
          {{remark.content}}
       </div>
     </div>
-    <p ng-if="!hasRemark" style="text-align: center">--还没有评论哦--</p>
+    <ion-infinite-scroll ng-if="hasmore" on-infinite="loadMore()" distance="1%">
+    </ion-infinite-scroll>
   </ion-content>
 
   <script id="my-modal.html" type="text/ng-template">
@@ -67,7 +67,7 @@
 
            <label class="item">
            <textarea placeholder="140字" ng-model="text" ng-change="textChange(text)" class="remarkInput" ></textarea>
-         <p style="text-align: right"> {{textLength}}</span>
+         <p style="text-align: right"> {{textLength}}</p>
            </label>
 
          </div>
