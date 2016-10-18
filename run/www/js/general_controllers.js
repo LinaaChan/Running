@@ -7,7 +7,6 @@ angular.module('starter.generalController', ['ngResource'])
     $scope.isLogged = false;
     userInfoDataServ.getUserInfo().then(function(data){
       $scope.ava_default = data.photo;
-      console.log($scope.ava_default);
         if(data.photo==null||data.photo==''||data.photo==undefined){
           $scope.ava_default = 'img/a1.jpg';
         }
@@ -29,7 +28,6 @@ angular.module('starter.generalController', ['ngResource'])
 
 if(!$scope.isLogged){
   $scope.ava_default = 'img/a1.jpg';
-  console.log($scope.ava_default);
 }else{
   $scope.ava_default ='';
 }
@@ -102,7 +100,7 @@ if(!$scope.isLogged){
         $state.go('app.register');
       }
 
-    //注销
+    //注销(通知所有的页面)
       $scope.doExit = function () {
        var name_curr =   locals.get('username','');
        if(name_curr!=''){
@@ -115,6 +113,8 @@ if(!$scope.isLogged){
            title: '提示',
            template: '注销成功'
          });
+         //对当前页面进行登录拦截
+          $state.go('app.home');
        }else{
          $ionicPopup.alert({
            title: '提示',
@@ -135,7 +135,6 @@ if(!$scope.isLogged){
       $scope.submitted = false;
       $scope.signupForm = function(form) {
         if (form.$valid) {
-          console.log(form.$valid);
           $http.post(registerServ.resUrl,{account: $scope.signup.name, password: $scope.signup.password})
            .success( function (data) {
            locals.set('username',  $scope.signup.name);
@@ -155,7 +154,6 @@ if(!$scope.isLogged){
            $state.go('app.home')
            })
         } else {
-          console.log(form.submitted);
           form.submitted = true;
         }
       }

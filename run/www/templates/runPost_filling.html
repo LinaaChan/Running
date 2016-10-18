@@ -5,49 +5,74 @@
     <form name="form" class="list inset" novalidate>
       <div class="list">
         <label class="item item-input">
-        <span class="input-label">日期</span>
-        <input type="date" ng-model="runInfoData.date"></label>
+          <span style="color: red">*</span><span class="input-label">日期</span>
+        <input name="date" type="date" ng-model="runInfoData.date" required></label>
+        <div class="error" ng-show="form.date.$dirty && form.date.$invalid && !form.date.$focused">
+          <small  ng-show="form.date.$error.required">
+            <p class="errorText">日期不能为空</p>
+          </small>
+        </div>
         <label class="item item-input">
-          <span class="input-label">时间</span>
-          <input type="time" ng-model="runInfoData.time"></label>
+          <span style="color: red">*</span><span class="input-label">时间</span>
+          <input name="time" type="time" ng-model="runInfoData.time" required>
+        </label>
+        <div class="error" ng-show="form.time.$dirty && form.time.$invalid && !form.time.$focused">
+          <small  ng-show="form.time.$error.required">
+            <p class="errorText">时间不能为空</p>
+          </small>
+        </div>
         <label class="item item-input">
-          <span class="input-label">地点</span>
-          <select size="1" style="border: none;background: transparent;" ng-model="runInfoData.addr">
-            <option>5号门</option>
+          <span style="color: red">*</span><span class="input-label">集合地点</span>
+          <select size="1"  style="border: none;background: transparent;" ng-model="runInfoData.addr">
+            <option selected>5号门</option>
+            <option>6号门</option>
             <option>3号门</option>
             <option>1号门</option>
             <option>东区体育场</option>
+            <option>北区体育场</option>
+            <option>体育馆</option>
             <option>灯塔</option>
           </select>
         </label>
+
         <label class="item item-input">
           <span class="input-label">希望人数</span>
-          <input type="number" ng-model="runInfoData.num"></label>
+          <input type="number" ng-model="runInfoData.num">
+        </label>
+
         <label class="item item-input">
-          <span class="input-label">小伙伴性别</span>
+          <span style="color: red">*</span><span class="input-label">小伙伴性别</span>
           <select size="1" style="border: none;background: transparent;" ng-model="runInfoData.sex">
             <option>男</option>
             <option>女</option>
-            <option>不限</option>
-          </select></label>
+            <option selected>不限</option>
+          </select>
+        </label>
+
         <label class="item item-input">
-          <span class="input-label">跑步长度</span>
-          <select size="1" style="border: none;background: transparent;" ng-model="runInfoData.len">
-            <option>400m</option>
+          <span style="color: red">*</span><span class="input-label">跑步长度</span>
+          <select name="len" size="1" style="border: none;background: transparent;" ng-model="runInfoData.len" required>
+            <option selected>400m</option>
             <option>800m</option>
             <option>1000m</option>
-            <option>其他</option>
-          </select></label>
+            <option>2000m</option>
+            <option>2500m</option>
+            <option>3000m</option>
+            <option>3000+m</option>
+          </select>
+        </label>
+
         <label class="item item-input">
           <span class="input-label">持续时长(min)</span>
-          <input type="number" ng-model="runInfoData.timeLast">
+          <input name="lasttime" type="number" ng-model="runInfoData.timeLast">
         </label>
+
         <label class="item item-input">
           <span class="input-label">留言</span>
           <textarea cols="20" rows="4" ng-model="runInfoData.note"></textarea>
         </label>
         <label class="item item-input" style="color: #888888">
-         点击地图选择路线，最多可选5个点
+          <span style="color: red">*</span> 点击地图选择路线，最多可选5个点
         </label>
       </div>
 
@@ -55,7 +80,7 @@
      <div  style="width:100%; height: 250px;" id="container"></div>
 
       <div  style="margin: 5px;">
-        <button class="button button-block button-positive" ng-click="upload()">
+        <button type="submit" class="button button-block button-positive" ng-click="uploadForm(form)">
           发布
         </button>
 

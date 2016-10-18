@@ -5,7 +5,6 @@ angular.module('Directives', ['ngCordova'])
       require: 'ngModel',
       link: function(scope, ele, attrs, ngModelController) {
         scope.$watch(attrs.ngModel, function(n) {
-          console.log(n);
           if (!n) return;
           $timeout.cancel($window.timer);
           $window.timer = $timeout(function(){
@@ -16,7 +15,6 @@ angular.module('Directives', ['ngCordova'])
                 "account":n
               }
             }).success(function(data) {
-              console.log(data);
               if(data==1){
                 ngModelController.$setValidity('unique', true);
               }else{

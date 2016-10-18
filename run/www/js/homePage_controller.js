@@ -26,7 +26,6 @@ angular.module('starter.homeCtrl', ['ngResource'])
     //上拉加载更多
       $scope.loadMore = function() {
         page = page+1;
-        console.log(page);
         $http({
           method:'get',
           url:'http://120.27.107.121/index.php',
@@ -34,20 +33,16 @@ angular.module('starter.homeCtrl', ['ngResource'])
             'page':page
           }
         }).success(function(data) {
-          console.log(data.array);
           if (data.array==null||data.array.length==0 ||data.array==undefined) {
-            console.log("结束");
             $scope.hasmore=false;
           }else{
             for(var j=0;j<data.array.length;j++)
               $scope.listInfo.push(data.array[j]);
             if(data.array.length<10&&data.array.length>0){
-              console.log("结束");
               $scope.hasmore=false;
             }else{
               $scope.hasmore=true;
             }
-            console.log($scope.listInfo);
           }
           $scope.$broadcast('scroll.infiniteScrollComplete');
         });

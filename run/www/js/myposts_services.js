@@ -1,7 +1,7 @@
 angular.module('postService', ['ngResource'])
 
-  .factory('postServ',['$resource','ip','$http','$q','$ionicLoading','$state',
-    function($resource,ip,$http,$q,$ionicLoading,$state){
+  .factory('postServ',['$resource','ip','$http','$q','$ionicLoading','$state','$timeout',
+    function($resource,ip,$http,$q,$ionicLoading,$state,$timeout){
    return{
      //获得某用户发布的全部内容
      getMyPosts:function(page){
@@ -47,7 +47,10 @@ angular.module('postService', ['ngResource'])
            'a_id':id
          }
        }).success(function(data,status,headers,config){
-         location.reload();
+       //  location.reload();
+         $timeout(function(){
+           $ionicLoading.hide();
+         },1500);
          defer.resolve(data);
        }).error(function(data,status,headers,config){
          alert('网络错误');
@@ -56,7 +59,7 @@ angular.module('postService', ['ngResource'])
        return defer.promise;
      },
      deleteMyRemarks : function(id){
-       $ionicLoading.show({template: '正在删除...'})
+       $ionicLoading.show({template: '正在删除...'});
          var defer = $q.defer();
          $http({
            method:'get',
@@ -65,7 +68,10 @@ angular.module('postService', ['ngResource'])
              'r_id':id
            }
          }).success(function(data,status,headers,config){
-           location.reload();
+           $timeout(function(){
+             $ionicLoading.hide();
+           },1500);
+          // location.reload();
            defer.resolve(data);
          }).error(function(data,status,headers,config){
            alert('网络错误');

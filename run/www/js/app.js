@@ -149,6 +149,7 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
 
       .state('app.myRemarks', {
         url: '/myRemarks',
+        cache:false,
         views: {
           'menuContent': {
             templateUrl: 'templates/myRemarks.html',
@@ -158,15 +159,7 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
         }
       })
 
-  /*    .state('app.myPostsDetail', {
-        url: '/myPost_detail',
-        views: {
-          'menuContent': {
-            templateUrl: 'templates/myPost_detail.html',
-            controller: 'myPostDetailCtrl'
-          }
-        }
-      })*/
+
       .state('app.register', {
         url: '/register',
         views: {
@@ -200,6 +193,7 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
 
       .state('app.runInfo', {
         url: '/run/:infoId',
+        cache: false,
         views: {
           'menuContent': {
             templateUrl: 'templates/runInfo.html',

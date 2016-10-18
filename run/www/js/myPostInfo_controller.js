@@ -24,7 +24,6 @@ angular.module('myPostInfoCtrls', [])
     //上拉加载更多
     $scope.loadMore = function() {
       page = page+1;
-      console.log(page);
       $http({
         method:'get',
         url:'http://120.27.107.121/getinfo.php?act=getUserActivity',
@@ -32,20 +31,16 @@ angular.module('myPostInfoCtrls', [])
           'page':page
         }
       }).success(function(data) {
-        console.log(data.array);
         if (data.array==null||data.array.length==0 ||data.array==undefined) {
-          console.log("结束");
           $scope.hasmore=false;
         }else{
           for(var j=0;j<data.array.length;j++)
             $scope.listInfo.push(data.array[j]);
           if(data.array.length<10&&data.array.length>0){
-            console.log("结束");
             $scope.hasmore=false;
           }else{
             $scope.hasmore=true;
           }
-          console.log($scope.listInfo);
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
       });
@@ -57,8 +52,8 @@ angular.module('myPostInfoCtrls', [])
 
     //删除我的动态
     $scope.remove = function(id){
-       postServ.deleteMyPost(id).then(function(data){
-         $ionicLoading.hide();
+       postServ.deleteMyPost(id).then(function(){
+         $scope.doRefresh();
        });
     }
     //获取详情
@@ -77,13 +72,12 @@ angular.module('myPostInfoCtrls', [])
     var page = 1;
     $scope.listInfo=[];
     postServ.getMyRemarks(1).then(function(data){
-      console.log(data);
       $scope.listInfo =  data.array;
     })
     $scope.doRefresh = function() {
       page=1;
       $scope.hasmore=true;
-      postServ.getMyPosts(1).then(function(data){
+      postServ.getMyRemarks(1).then(function(data){
         $scope.listInfo =  data.array;
       }).then(function(){
         $scope.$broadcast('scroll.refreshComplete');
@@ -93,7 +87,6 @@ angular.module('myPostInfoCtrls', [])
     //上拉加载更多
     $scope.loadMore = function() {
       page = page+1;
-      console.log(page);
       $http({
         method:'get',
         url:'http://120.27.107.121/getinfo.php?act=getRemark',
@@ -101,20 +94,16 @@ angular.module('myPostInfoCtrls', [])
           'page':page
         }
       }).success(function(data) {
-        console.log(data.array);
         if (data.array==null||data.array.length==0 ||data.array==undefined) {
-          console.log("结束");
           $scope.hasmore=false;
         }else{
           for(var j=0;j<data.array.length;j++)
             $scope.listInfo.push(data.array[j]);
           if(data.array.length<10&&data.array.length>0){
-            console.log("结束");
             $scope.hasmore=false;
           }else{
             $scope.hasmore=true;
           }
-          console.log($scope.listInfo);
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
       });
@@ -126,8 +115,8 @@ angular.module('myPostInfoCtrls', [])
 
     //删除我的评论
     $scope.remove = function(id){
-      postServ.deleteMyRemarks(id).then(function(data){
-        $ionicLoading.hide();
+      postServ.deleteMyRemarks(id).then(function(){
+        $scope.doRefresh();
       });
     }
     //获取详情

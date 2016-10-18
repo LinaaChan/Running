@@ -4,12 +4,14 @@
     <a class="button button-clear icon ion-compose"  ng-click="edit()"></a>
   </ion-nav-buttons>
   <ion-content>
+    <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()">
+    </ion-refresher>
     <div class="list">
       <div class="item item-text-wrap" >
         <div class="row" >
           <div class="col-33">
             <a style="background-color: transparent;border: none" class="item item-avatar-left " menu-close>
-              <img ng-src=".{{details.toAccount}}">
+              <img ng-src="{{details.photo}}">
             </a>
             <p>{{details.toAccount}}</p>
           </div>
@@ -28,12 +30,13 @@
             <a> 地点：{{details.address}}</a><br/>
             <a> 距离：{{details.distance}}</a><br/>
             <a> 人数：{{details.p_number}}</a><br/>
-            <a> 路线：{{details.route}}</a><br/>
+            <!--<a> 路线：{{details.route}}</a><br/>-->
             <a> 活动时长：{{details.runtime}}</a><br/>
             <a> 留言：{{details.description}}</a><br/>
           </div>
         </div>
       </div>
+      <div  style="width:100%; height: 250px;" id="container"></div>
     </div>
 <!--评论-->
     <div class="list" style="margin-top: 0" ng-if="hasRemark">

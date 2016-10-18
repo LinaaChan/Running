@@ -8,36 +8,21 @@
       <div class="item" style="text-align: center">
         <img class="to"  ng-src="{{myInfo.photo}}" ng-click="addAttachment()">
         <p>{{myInfo.introduce}}
-          <buuton ng-click="showModel()" class="icon-only icon ion-edit"></buuton>
+          <a style="color:#ef473a" ng-click="showModel()" class="button button-small button-icon icon ion-ios-color-wand-outline"></a>
         </p>
-        <!-- 头像置于中间-->
-        <!--<div class="row widthSize item item-icon-right">
-          <div class="col-33 myInfoAvatar1 widthSize">
-            <br>
-            <a> <strong>头像</strong></a>
-          </div>
-          <div class="col-67 infoCol widthSize" ng-click="addAttachment()">
-            <img  style="height: 60px;width: 60px;" ng-src="{{myInfo.photo}}" >
-          </div>
-        </div>-->
       </div>
-      <!--<div class="item item-input" style="text-align: center">-->
-        <!--{{myInfo.introduce}}-->
-      <!--</div>-->
-
-      <label class="item item-input">
-        <span class="input-label"><strong>用户名</strong></span>
-        <input ng-model="myInfo.account" style="background: white;text-align: right" ng-value="myInfo.account" ng-readonly="!isEdit" type="text" class="widthSize"/>
-      </label>
 
       <label class="item item-input">
         <span class="input-label"><strong>昵称</strong></span>
         <input ng-model="myInfo.name" style="background: white;text-align: right" ng-value="myInfo.name" ng-readonly="!isEdit" type="text" class="widthSize"/>
       </label>
 
-      <label class="item item-input">
+
+
+      <label class="item item-input item-icon-right" ng-click="openchange()">
         <span class="input-label"><strong>密码</strong></span>
-        <input ng-model="myInfo.password" style="background: white;text-align: right" ng-value="password" ng-readonly="!isEdit" type="password" class="widthSize"/>
+        <a> <i class="icon ion-ios-arrow-right"></i></a>
+        <!--<input ng-model="myInfo.password" style="background: white;text-align: right" ng-value="password" ng-readonly="!isEdit" type="password" class="widthSize"/>-->
       </label>
 
       <!--<div class="row item  item-icon-right widthSize">-->
@@ -78,6 +63,36 @@
           </label>
 
         </div>
+      </ion-content>
+    </div>
+  </script>
+  <script id="my-password.html" type="text/ng-template">
+
+    <div class="modal">
+      <ion-header-bar class="bar-positive">
+        <div class="buttons">
+          <button class="button icon ion-ios-close-empty  button-light button-clear" ng-click="closeModal1()"></button>
+        </div>
+        <h1 class="title">修改密码</h1>
+        <div class="buttons">
+          <button class="button icon ion-ios-checkmark-empty button-light button-clear" ng-click="changePassword()"></button>
+        </div>
+      </ion-header-bar>
+      <ion-content>
+        <form>
+          <div class="list card">
+            <label class="item item-input">
+              <span class="input-label">新密码</span>
+              <input  type="password" ng-model="newPwd.password1" >
+            </label>
+            <label class="item item-input">
+              <span class="input-label">确认密码</span>
+              <input  type="password" ng-model="newPwd.password2" >
+            </label>
+
+          </div>
+
+        </form>
       </ion-content>
     </div>
   </script>

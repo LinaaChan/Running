@@ -1,7 +1,8 @@
 angular.module('starter.runCtrl', [])
 
 //发布详细信息
-  .controller('runInfoFillCtrl',['$scope','locals','runInfoDataServ', 'signBlock',function($scope,locals,runInfoDataServ,signBlock) {
+  .controller('runInfoFillCtrl',['$scope','locals','runInfoDataServ', 'signBlock','$ionicPopup',
+    function($scope,locals,runInfoDataServ,signBlock,$ionicPopup) {
 
     $scope.runInfoData = {};
     var myDate = new Date();
@@ -17,8 +18,15 @@ angular.module('starter.runCtrl', [])
     //获取当前点标记的位置方法marker.getPosition( )
     var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
     var clickEventListener = map.on('click', function(e) {
-      markers.push([e.lnglat.getLng(),e.lnglat.getLat()]);
-      $scope.$broadcast("Marks",markers);
+      if(markers.length<5){
+        markers.push([e.lnglat.getLng(),e.lnglat.getLat()]);
+        $scope.$broadcast("Marks",markers);
+      }else{
+        $ionicPopup.confirm({
+          title: '提醒',
+          template: '最多只能选择五个点！'
+        });
+      }
     });
     $scope.$on('Marks', function (event, update_status) {
       map.clearMap();
@@ -65,23 +73,63 @@ angular.module('starter.runCtrl', [])
     }
     map.setFitView();
     $scope.runInfoData.timeCurr = myDate.toLocaleString();
-    $scope.upload = function(){
-      runInfoDataServ.postAction($scope.runInfoData);
-    }
-
-
-
-
+    $scope.submitted = false;
+    $scope.uploadForm = function(form) {
+        if (form.$valid) {
+          if(markers.length==0||markers.length==1){
+            $ionicPopup.confirm({
+              title: '提醒',
+              template: '请描绘路线(至少两个点，最多五个点)'
+            });
+          }else{
+            $scope.runInfoData.route  = markers.toString();
+            runInfoDataServ.postAction($scope.runInfoData);
+          }
+        } else {
+          form.submitted = true;
+        }
+      }
   }])
 
   //某个动态的详细信息
   .controller('runInfoCtrl',['$scope','locals','runInfoDataServ','$stateParams','$ionicModal','signBlock','$state','$ionicPopup','signServ','$location','$ionicLoading','$http',
     function($scope,locals,runInfoDataServ,$stateParams,$ionicModal,signBlock,$state,$ionicPopup,signServ,$location,$ionicLoading,$http) {
     //获取详情
-    console.log($stateParams.infoId);
+
+      var markers=[];
+      var map = new AMap.Map('container',{
+        zoom: 15,
+        center: [121.904839,30.875321],
+        zooms:[7,25],
+        mapStyle:'blue_night'
+      });
      runInfoDataServ.runInfoDetail($stateParams.infoId).then(function(data){
-        $scope.details = data;
+       var polygonArr =[];
+       $scope.details = data;
+       markers = data.route.split(",");
+
+       //获取路线地图
+        for(var i=0;i<markers.length;i+=2){
+        polygonArr.push([markers[i],markers[i+1]]);
+        new AMap.Marker({
+        map: map,
+        animation: 'AMAP_ANIMATION_DROP',
+        position: [markers[i],markers[i+1]],
+        raiseOnDrag: false,
+        clickable: false
+        });
+        }
+       new AMap.Polyline({
+         map: map,
+         path:  polygonArr,
+         strokeColor: "#FF33FF",//线颜色
+         strokeOpacity: 1,//线透明度
+         strokeWeight: 3,//线宽
+         strokeStyle: "solid"//线样式
+       });
      });
+
+
 
     //获取动态的相关评论（有分页设置）
       $scope.hasmore=true;
@@ -95,10 +143,23 @@ angular.module('starter.runCtrl', [])
       }
     });
 
+      //刷新当前动态的评论
+      $scope.doRefresh = function(){
+         page = 1;
+        $scope.remarks=[];
+        runInfoDataServ.getRemarks($stateParams.infoId,1).then(function(data){
+          $scope.hasRemark = false;
+          if(data!=null||data!=''){
+            $scope.remarks = data.array;
+            $scope.hasRemark = true;
+          }
+        }).then(function(){
+          $scope.$broadcast('scroll.refreshComplete');
+        });
+      }
       //上拉加载更多
       $scope.loadMore = function() {
         page = page+1;
-        console.log(page);
         $http({
           method:'get',
           url:'http://120.27.107.121/getinfo.php?act=getActivityRemark',
@@ -107,20 +168,16 @@ angular.module('starter.runCtrl', [])
             'a_id':$stateParams.infoId
           }
         }).success(function(data) {
-          console.log(data.array);
           if (data.array==null||data.array.length==0 ||data.array==undefined) {
-            console.log("结束");
             $scope.hasmore=false;
           }else{
             for(var j=0;j<data.array.length;j++)
               $scope.listInfo.push(data.array[j]);
             if(data.array.length<10&&data.array.length>0){
-              console.log("结束");
               $scope.hasmore=false;
             }else{
               $scope.hasmore=true;
             }
-            console.log($scope.listInfo);
           }
           $scope.$broadcast('scroll.infiniteScrollComplete');
         });
@@ -204,22 +261,30 @@ angular.module('starter.runCtrl', [])
       };
       //发表评论
       $scope.sendRemark = function() {
-        runInfoDataServ.postRemarks($stateParams.infoId,$scope.comm_text).then(function(data){
-          $ionicLoading.hide();
-        });
-        $scope.modal.hide();
+        if($scope.comm_text==''||$scope.comm_text==undefined){
+          alert('评论不能为空');
+        }else{
+          runInfoDataServ.postRemarks($stateParams.infoId,$scope.comm_text).then(function(){
+            $scope.doRefresh();
+          });
+          $scope.modal.hide();
+        }
       };
     }])
 
   //用户详细信息
   .controller('userInfoCtrl',['$scope','locals','$ionicActionSheet','$cordovaCamera','userInfoDataServ','$cordovaImagePicker','$rootScope','$ionicPopup','signBlock','$location','signServ','$state','$ionicModal',
     function($scope,locals,$ionicActionSheet,$cordovaCamera,userInfoDataServ, $cordovaImagePicker,$rootScope,$ionicPopup,signBlock,$location,signServ,$state,$ionicModal) {
-      userInfoDataServ.getUserInfo().then(function(data){
-        $scope.myInfo=data;
-        if(data.photo==null||data.photo==''){
-          $scope.myInfo.photo = 'img/a1.jpg';
-        }
-      });
+      $scope.doRefresh = function(){
+        userInfoDataServ.getUserInfo().then(function(data){
+          $scope.myInfo=data;
+          if(data.photo==null||data.photo==''){
+            $scope.myInfo.photo = 'img/a1.jpg';
+          }
+        });
+      }
+      $scope.doRefresh();
+
      /* $rootScope.$on("NewAva", function (event, update_name) {
         $scope.myInfo.photo = update_name;
       });*/
@@ -230,6 +295,7 @@ angular.module('starter.runCtrl', [])
     $scope.edit = function(){
       $scope.isEdit =!$scope.isEdit;
     }
+
 
 
     $scope.addAttachment = function () {
@@ -286,7 +352,7 @@ angular.module('starter.runCtrl', [])
 //调用相册
       var pickImage = function () {
         var options = {
-          maximumImagesCount: 2,
+          maximumImagesCount: 1,
           width: 800,
           height: 800,
           quality: 50
@@ -309,7 +375,7 @@ angular.module('starter.runCtrl', [])
         confirmPopup.then(function(res) {
           if(res) {
             userInfoDataServ.uploadAva(imgUrl).then(function(){
-              $ionicLoading.hide();
+              $scope.doRefresh();
             });
           } else {
             console.log('You are not sure');
@@ -324,14 +390,52 @@ angular.module('starter.runCtrl', [])
           if(data==1){
             $scope.edit();
             userInfoDataServ.updateUserInfo($scope.myInfo).then(function(){
-              $ionicLoading.hide();
+              $scope.doRefresh();
             });
           }else{
             $scope.showPopup($location.path());
           }
         })
-
       }
+//修改密码（登录拦截）
+      $scope.newPwd = {};
+      $scope.openchange = function(){
+        signBlock.blockTest().then(function(data){
+          if(data==1){
+            $scope.openModal1();
+          }else{
+            $scope.showPopup($location.path());
+          }
+        })
+      }
+      $scope.changePassword = function(){
+        if($scope.newPwd.password1==$scope.newPwd.password2){
+          userInfoDataServ.changePassword($scope.newPwd.password1).then(function(){
+            $scope.doRefresh();
+            $scope.closeModal1();
+          });
+        }else{
+          alert('两次输入的密码不同!');
+        }
+      }
+
+      //修改密码框
+      $ionicModal.fromTemplateUrl('my-password.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function(modal) {
+        $scope.modal1 = modal;
+      });
+      $scope.openModal1 = function() {
+        $scope.modal1.show();
+      };
+      $scope.closeModal1 = function() {
+        $scope.modal1.hide();
+      };
+      //当我们用到模型时，清除它！
+      $scope.$on('$destroy', function() {
+        $scope.modal1.remove();
+      });
 
       //登录模块
       $scope.loginData ={};
@@ -408,9 +512,7 @@ angular.module('starter.runCtrl', [])
       };
       //发表评论
       $scope.sendIntro = function() {
-        userInfoDataServ.updateUserInfo($scope.myInfo).then(function(){
-          $ionicLoading.hide();
-        });
+        userInfoDataServ.updateUserInfo($scope.myInfo);
         $scope.modal.hide();
       };
 

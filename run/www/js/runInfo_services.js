@@ -7,12 +7,19 @@ angular.module('runInfoService', ['ngResource'])
       //发布动态的路由
       postRunInfoUrl:ip + 'activity.php?act=postActivity',
       postAction : function(runInfo){
-        $ionicLoading.show({template: '正在发布...'});
+        $ionicLoading.show({
+          template: '正在上传',
+          content: 'Loading',
+          animation: 'fade-in',
+          showBackdrop: false,
+          maxWidth: 200,
+          showDelay: 0
+        });
         $http.post(ip + 'activity.php?act=postActivity',{
           postTime : runInfo.date,
           address : runInfo.addr,
           p_number : runInfo.num,
-          route : '',
+          route :runInfo.route,
           distance : runInfo.len,
           description : runInfo.note,
           toAccount : locals.get('username',''),
@@ -41,7 +48,6 @@ angular.module('runInfoService', ['ngResource'])
       //获得某一详情的评论
       getRemarks : function(id,page){
         var defer = $q.defer();
-       ;
         $http.get( ip +'getinfo.php?act=getActivityRemark',{params:{'a_id':id,'page':page}})
           .success(function(data){
             defer.resolve(data);
@@ -51,29 +57,51 @@ angular.module('runInfoService', ['ngResource'])
         return defer.promise;
       },
       postRemarks : function(id,content){
-        $ionicLoading.show({template: '正在上传评论...'});
+        var defer = $q.defer();
+        $ionicLoading.show({
+          template: '正在上传',
+          content: 'Loading',
+          animation: 'fade-in',
+          showBackdrop: false,
+          maxWidth: 200,
+          showDelay: 0
+      });
         $http.post(ip + 'remark.php?act=remark&a_id='+id,{
           content : content
         }).success(function(data){
-           location.reload();
+          defer.resolve(data);
+           //location.reload();
+          $timeout(function(){
+            $ionicLoading.hide();
+          },1000);
         }).error(function(data){
+          defer.resolve(data);
           $ionicPopup.alert({
             title: '提示',
             template: '系统错误'
           });
         });
+        return defer.promise;
       }
 
     }
 
   }])
 
-  .factory('userInfoDataServ',['$resource','ip','$http','$q','locals','$state','$cordovaFileTransfer','$rootScope','$ionicLoading',
-    function($resource,ip,$http,$q,locals,$state,$cordovaFileTransfer,$rootScope,$ionicLoading){
+  .factory('userInfoDataServ',['$resource','ip','$http','$q','locals','$state','$cordovaFileTransfer','$rootScope','$ionicLoading','$timeout',
+    function($resource,ip,$http,$q,locals,$state,$cordovaFileTransfer,$rootScope,$ionicLoading,$timeout){
       return {
         //上传头像
         uploadAva  : function(imgUrl) {
-          $ionicLoading.show({template: '正在上传头像...'});
+          var defer = $q.defer();
+          $ionicLoading.show({
+            template: '正在上传',
+            content: 'Loading',
+            animation: 'fade-in',
+            showBackdrop: false,
+            maxWidth: 200,
+            showDelay: 0
+          });
           var myDate = new Date().toLocaleString();
           var imgName=locals.get('username','')+myDate;
           var url = ip+'photoUpload.php';
@@ -83,15 +111,22 @@ angular.module('runInfoService', ['ngResource'])
            options.mimeType="image/jpeg";
             $cordovaFileTransfer.upload(url, imgUrl, options)
               .then(function (result) {
-                location.reload();
-                 // $rootScope.$broadcast('NewAva',imgUrl);
+                $timeout(function(){
+                  $ionicLoading.hide();
+                },1500);
+                defer.resolve(result);
+              //  location.reload();
+                  $rootScope.$broadcast('NewAva',imgUrl);
                   //$state.go("app.home", {}, { reload: true });
                //success
               }, function (err) {
+                defer.resolve(err);
               //fail
               }, function (progress) {
+                defer.resolve(progress);
                 // constant progress updates
               });
+          return defer.promise;
         },
         getUserInfo:function(){
           var defer = $q.defer();
@@ -110,7 +145,15 @@ angular.module('runInfoService', ['ngResource'])
           return defer.promise;
         },
         updateUserInfo : function(newUserInfo){
-          $ionicLoading.show({template: '正在修改信息...'});
+          var defer = $q.defer();
+          $ionicLoading.show({
+            template: '正在上传',
+            content: 'Loading',
+            animation: 'fade-in',
+            showBackdrop: false,
+            maxWidth: 200,
+            showDelay: 0
+          });
           $http.post(ip + 'updateinfo.php?act=update',{
             name : newUserInfo.name,
             tel : newUserInfo.tel,
@@ -118,11 +161,42 @@ angular.module('runInfoService', ['ngResource'])
             introduce : newUserInfo.introduce,
             school : '上海海事大学'
           }).success(function(data){
-           location.reload();
+            defer.resolve(data);
+            $timeout(function(){
+              $ionicLoading.hide();
+            },1500);
+         //  location.reload();
           }).error(function(data){
+            defer.resolve(data);
             alert('系统错误');
           });
-
+          return defer.promise;
+        },
+        changePassword : function(pwd){
+          var defer = $q.defer();
+          $ionicLoading.show({
+            template: '正在修改',
+            content: 'Loading',
+            animation: 'fade-in',
+            showBackdrop: false,
+            maxWidth: 200,
+            showDelay: 0
+          });
+          $http.post(ip + 'modifyPwd.php?act=modifyPwd',{
+            oldPassword : locals.get('password',''),
+            newPassword : pwd
+          }).success(function(data){
+            console.log(data);
+            defer.resolve(data);
+            $timeout(function(){
+              $ionicLoading.hide();
+            },1500);
+            //  location.reload();
+          }).error(function(data){
+            defer.resolve(data);
+            alert('系统错误');
+          });
+          return defer.promise;
         }
         }
 

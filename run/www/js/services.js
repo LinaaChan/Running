@@ -74,7 +74,6 @@ angular.module('starter.services', ['ngResource'])
                 }
                 $rootScope.$broadcast("NewAva",ava_photo);
               });
-              console.log(url);
               $location.path(url);
             }else{
              // alert('账户或用户名错误！');
@@ -122,13 +121,10 @@ angular.module('starter.services', ['ngResource'])
       //检验当前用户是否登录（是否合法），若没有，则跳转到登录页面，若已登录，则继续动作（对用户透明）
       blockTest : function(){
         var username = locals.get('username','');
-        console.log(username);
         var password = locals.get('password','');
-        console.log(password);
         var defer = $q.defer();
         $http.post(ip + 'register.php?act=login',{account:username,password:password})
           .success(function(data){
-            console.log(data);
             defer.resolve(data);
           }).error(function(data){
             defer.resolve(data);
