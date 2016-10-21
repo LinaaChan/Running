@@ -186,7 +186,11 @@ angular.module('runInfoService', ['ngResource'])
             oldPassword : locals.get('password',''),
             newPassword : pwd
           }).success(function(data){
-            console.log(data);
+            if(data==1){
+              locals.set('password',pwd);
+            }else{
+              alert('修改失败');
+            }
             defer.resolve(data);
             $timeout(function(){
               $ionicLoading.hide();

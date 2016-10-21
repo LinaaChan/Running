@@ -92,8 +92,8 @@ angular.module('starter.runCtrl', [])
   }])
 
   //某个动态的详细信息
-  .controller('runInfoCtrl',['$scope','locals','runInfoDataServ','$stateParams','$ionicModal','signBlock','$state','$ionicPopup','signServ','$location','$ionicLoading','$http',
-    function($scope,locals,runInfoDataServ,$stateParams,$ionicModal,signBlock,$state,$ionicPopup,signServ,$location,$ionicLoading,$http) {
+  .controller('runInfoCtrl',['$scope','locals','runInfoDataServ','$stateParams','$ionicModal','signBlock','$state','$ionicPopup','signServ','$location','$ionicLoading','$http','$timeout',
+    function($scope,locals,runInfoDataServ,$stateParams,$ionicModal,signBlock,$state,$ionicPopup,signServ,$location,$ionicLoading,$http,$timeout) {
     //获取详情
 
       var markers=[];
@@ -273,8 +273,8 @@ angular.module('starter.runCtrl', [])
     }])
 
   //用户详细信息
-  .controller('userInfoCtrl',['$scope','locals','$ionicActionSheet','$cordovaCamera','userInfoDataServ','$cordovaImagePicker','$rootScope','$ionicPopup','signBlock','$location','signServ','$state','$ionicModal',
-    function($scope,locals,$ionicActionSheet,$cordovaCamera,userInfoDataServ, $cordovaImagePicker,$rootScope,$ionicPopup,signBlock,$location,signServ,$state,$ionicModal) {
+  .controller('userInfoCtrl',['$scope','locals','$ionicActionSheet','$cordovaCamera','userInfoDataServ','$cordovaImagePicker','$rootScope','$ionicPopup','signBlock','$location','signServ','$state','$ionicModal','$timeout',
+    function($scope,locals,$ionicActionSheet,$cordovaCamera,userInfoDataServ, $cordovaImagePicker,$rootScope,$ionicPopup,signBlock,$location,signServ,$state,$ionicModal,$timeout) {
       $scope.doRefresh = function(){
         userInfoDataServ.getUserInfo().then(function(data){
           $scope.myInfo=data;
@@ -399,15 +399,31 @@ angular.module('starter.runCtrl', [])
       }
 //修改密码（登录拦截）
       $scope.newPwd = {};
-      $scope.openchange = function(){
-        signBlock.blockTest().then(function(data){
-          if(data==1){
-            $scope.openModal1();
-          }else{
-            $scope.showPopup($location.path());
-          }
-        })
+//先确认密码
+      $scope.showConfirmPop = function(){
+        $scope.confirmPwd = {}
+        var confirmPwdPop = $ionicPopup.show({
+          template: '<input type="password" ng-model="confirmPwd.password">',
+          title: '请输入当前密码',
+          scope: $scope,
+          buttons: [
+            { text: '取消' },
+            {
+              text: '<b>确认</b>',
+              type: 'button-positive',
+              onTap: function(e) {
+                if($scope.confirmPwd.password==locals.get('password','')){
+                  confirmPwdPop .close();
+                  $scope.openModal1();
+                }else{
+                  alert('密码错误！');
+                }
+              }
+            }
+          ]
+        });
       }
+
       $scope.changePassword = function(){
         if($scope.newPwd.password1==$scope.newPwd.password2){
           userInfoDataServ.changePassword($scope.newPwd.password1).then(function(){
