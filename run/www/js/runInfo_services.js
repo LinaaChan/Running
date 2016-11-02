@@ -45,6 +45,10 @@ angular.module('runInfoService', ['ngResource'])
         });
         return defer.promise;
       },
+      //获取某用户是否已经报名某活动
+      isJoined : function(id){
+
+      },
       //获得某一详情的评论
       getRemarks : function(id,page){
         var defer = $q.defer();

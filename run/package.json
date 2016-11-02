@@ -16,7 +16,14 @@
   },
   "cordovaPlugins": [
     "cordova-plugin-device",
-    "cordova-plugin-console"
+    "cordova-plugin-console",
+    {
+      "variables": {
+        "API_KEY": "b4ce1a54e4af7cf9529b05ec"
+      },
+      "locator": "H:\\running\\jpush-phonegap-plugin",
+      "id": "jpush-phonegap-plugin"
+    }
   ],
   "cordovaPlatforms": [
     "android"

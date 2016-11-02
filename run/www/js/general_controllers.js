@@ -71,6 +71,27 @@ if(!$scope.isLogged){
         })
       }
 
+ //获取用户提醒的信息
+      $scope.getMessage = function () {
+        signBlock.blockTest().then(function(data){
+          if(data==1){
+            $state.go('app.message');
+          }else{
+            $scope.showPopup('app/message');
+          }
+        })
+      }
+//获取我的参与
+      $scope.getMyJoin = function () {
+        signBlock.blockTest().then(function(data){
+          if(data==1){
+            $state.go('app.myJoin');
+          }else{
+            $scope.showPopup('app/myJoin');
+          }
+        })
+      }
+
       //登录模块
       $scope.loginData ={};
       var myPopup;

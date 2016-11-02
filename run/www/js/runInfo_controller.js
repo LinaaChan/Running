@@ -92,9 +92,22 @@ angular.module('starter.runCtrl', [])
   }])
 
   //某个动态的详细信息
-  .controller('runInfoCtrl',['$scope','locals','runInfoDataServ','$stateParams','$ionicModal','signBlock','$state','$ionicPopup','signServ','$location','$ionicLoading','$http','$timeout',
-    function($scope,locals,runInfoDataServ,$stateParams,$ionicModal,signBlock,$state,$ionicPopup,signServ,$location,$ionicLoading,$http,$timeout) {
+  .controller('runInfoCtrl',['$scope','locals','runInfoDataServ','$stateParams','$ionicModal','signBlock','$state','$ionicPopup','signServ','$location','$ionicLoading','$http','myJoinServ',
+    function($scope,locals,runInfoDataServ,$stateParams,$ionicModal,signBlock,$state,$ionicPopup,signServ,$location,$ionicLoading,$http,myJoinServ) {
     //获取详情
+
+      //获取（某用户是否参与某活动,传参：$stateParams.infoId）
+      var isJoined = function(){
+        myJoinServ.isJoined($stateParams.infoId).then(function(data){
+          if(data==1){
+            $scope.isJoined = true;
+          }else{
+            $scope.isJoined = false;
+          }
+
+        })
+      }
+      isJoined();
 
       var markers=[];
       var map = new AMap.Map('container',{
@@ -103,6 +116,7 @@ angular.module('starter.runCtrl', [])
         zooms:[7,25],
         mapStyle:'blue_night'
       });
+
      runInfoDataServ.runInfoDetail($stateParams.infoId).then(function(data){
        var polygonArr =[];
        $scope.details = data;
@@ -220,6 +234,32 @@ angular.module('starter.runCtrl', [])
         signBlock.blockTest().then(function(data){
           if(data==1){
             $scope.openModal();
+          }else{
+            $scope.showPopup($location.path);
+          }
+        })
+      }
+
+      //报名(登录拦截)
+      $scope.addMyJoin = function(){
+        signBlock.blockTest().then(function(data){
+          if(data==1){
+           myJoinServ.joinActivity($stateParams.infoId).then(function(){
+             isJoined();
+           });
+          }else{
+            $scope.showPopup($location.path);
+          }
+        })
+      }
+
+       //取消(登录拦截)
+      $scope.cancelMyJoin = function(){
+        signBlock.blockTest().then(function(data){
+          if(data==1){
+           myJoinServ.cancelMyJoin($stateParams.infoId).then(function(){
+             isJoined();
+           });
           }else{
             $scope.showPopup($location.path);
           }

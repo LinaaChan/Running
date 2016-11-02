@@ -33,6 +33,8 @@
             <!--<a> 路线：{{details.route}}</a><br/>-->
             <a> 活动时长：{{details.runtime}}</a><br/>
             <a> 留言：{{details.description}}</a><br/>
+           <a ng-if="!isJoined" style="float: right;color: cornflowerblue" class="button button-icon icon ion-happy" ng-click="addMyJoin()"></a>
+           <a ng-if="isJoined" style="float: right;color: cornflowerblue" class="button button-icon icon ion-sad" ng-click="cancelMyJoin()"></a>
           </div>
         </div>
       </div>

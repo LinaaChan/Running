@@ -7,7 +7,7 @@
 angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.homeCtrl', 'starter.runCtrl',
   'starter.generalController', 'starter.weaCtrl','logService','homeService','runInfoService','Directives','myPostInfoCtrls','postService'])
 
-  .run(function ($ionicPlatform,$cordovaToast,$rootScope, $location, $timeout, $ionicHistory,$ionicPopup,$templateCache ) {
+  .run(function ($ionicPlatform,$cordovaToast,$rootScope, $location, $timeout, $ionicHistory,$ionicPopup,$templateCache,$state ) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -22,6 +22,18 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
+
+      //启动极光推送服务
+      window.plugins.jPushPlugin.init();
+      //调试模式
+      window.plugins.jPushPlugin.setDebugMode(true);
+      window.plugins.jPushPlugin.openNotificationInAndroidCallback = function (data)
+      {
+      //  var obj = JSON.parse(data);
+     //   var idValue = obj.extras['cn.jpush.android.EXTRA'].id;//对应极光推送： 附加字段的键名
+     //   var alert = obj.extras['cn.jpush.android.ALERT'];
+     //   $state.go('app.message', {id: idValue + alert});
+      };
     });
 
     $ionicPlatform.registerBackButtonAction(function (e) {
@@ -58,32 +70,6 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.defaults.useXDomain = true;
     $httpProvider.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=utf-8";
-//	delete $httpProvider.defaults.headers.common['X-Requested-With'];
-
-
-   //登录拦截
-   /* $httpProvider.interceptors.push(function ($q, $location, User, $rootScope) {
-      return {
-        'request': function (config) {
-          config.headers = config.headers || {};
-          if (User.getToken()) {
-            config.headers.Authorization = 'Bearer ' + User.getToken();
-          }
-          return config;
-        },
-        'responseError': function (response) {
-          if (response.status === 401 || response.status === 403) {
-            //如果之前登陆过
-            if (User.getToken()) {
-              $rootScope.$broadcast('unAuthenticed');
-            }
-          }
-          return $q.reject(response);
-        }
-      };
-    });
-
-*/
 
   })
 
@@ -132,6 +118,27 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
           'menuContent': {
             templateUrl: 'templates/weather.html',
             controller: 'weatherCtrl'
+          }
+        }
+      })
+      //推送页面
+      .state('app.message', {
+        url: '/message',
+        cache:false,
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/message.html',
+            controller: 'messageCtrl'
+          }
+        }
+      })
+    .state('app.myJoin', {
+        url: '/myJoin',
+        cache:false,
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/myJoin.html',
+            controller: 'myJoinCtrl'
           }
         }
       })
