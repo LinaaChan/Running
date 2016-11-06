@@ -6,7 +6,9 @@
       <div class="list">
         <label class="item item-input">
           <span style="color: red">*</span><span class="input-label">日期</span>
-        <input name="date" type="date" ng-model="runInfoData.date" required></label>
+        <input name="date" type="date"  ng-model="runInfoData.date" required>
+        </label>
+
         <div class="error" ng-show="form.date.$dirty && form.date.$invalid && !form.date.$focused">
           <small  ng-show="form.date.$error.required">
             <p class="errorText">日期不能为空</p>

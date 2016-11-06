@@ -7,9 +7,9 @@ angular.module('myPostInfoCtrls', [])
     $scope.hasmore=true;
     var page = 1;
     $scope.listInfo=[];
-    postServ.getMyPosts(1).then(function(data){
+   /* postServ.getMyPosts(1).then(function(data){
       $scope.listInfo =  data.array;
-    });
+    });*/
     $scope.doRefresh = function() {
       page=1;
       $scope.hasmore=true;
@@ -20,7 +20,7 @@ angular.module('myPostInfoCtrls', [])
         $scope.$broadcast('scroll.refreshComplete');
       });
     };
-
+    $scope.doRefresh();
     //上拉加载更多
     $scope.loadMore = function() {
       page = page+1;
@@ -52,7 +52,7 @@ angular.module('myPostInfoCtrls', [])
 
     //删除我的动态
     $scope.remove = function(id){
-       postServ.deleteMyPost(id).then(function(){
+       postServ.deleteMyPost(id).then(function(data){
          $scope.doRefresh();
        });
     }
@@ -71,9 +71,9 @@ angular.module('myPostInfoCtrls', [])
     $scope.hasmore=true;
     var page = 1;
     $scope.listInfo=[];
-    postServ.getMyRemarks(1).then(function(data){
+   /* postServ.getMyRemarks(1).then(function(data){
       $scope.listInfo =  data.array;
-    })
+    })*/
     $scope.doRefresh = function() {
       page=1;
       $scope.hasmore=true;
@@ -83,7 +83,7 @@ angular.module('myPostInfoCtrls', [])
         $scope.$broadcast('scroll.refreshComplete');
       });
     };
-
+      $scope.doRefresh();
     //上拉加载更多
     $scope.loadMore = function() {
       page = page+1;

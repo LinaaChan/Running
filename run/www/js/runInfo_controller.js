@@ -1,12 +1,12 @@
 angular.module('starter.runCtrl', [])
 
 //发布详细信息
-  .controller('runInfoFillCtrl',['$scope','locals','runInfoDataServ', 'signBlock','$ionicPopup',
-    function($scope,locals,runInfoDataServ,signBlock,$ionicPopup) {
+  .controller('runInfoFillCtrl',['$scope','locals','runInfoDataServ', 'signBlock','$ionicPopup','$cordovaDatePicker',
+    function($scope,locals,runInfoDataServ,signBlock,$ionicPopup,$cordovaDatePicker) {
 
     $scope.runInfoData = {};
     var myDate = new Date();
-    //map
+
     var map = new AMap.Map('container',{
       zoom: 15,
       center: [121.904839,30.875321],
@@ -84,6 +84,7 @@ angular.module('starter.runCtrl', [])
           }else{
             $scope.runInfoData.route  = markers.toString();
             runInfoDataServ.postAction($scope.runInfoData);
+            console.log($scope.runInfoData);
           }
         } else {
           form.submitted = true;

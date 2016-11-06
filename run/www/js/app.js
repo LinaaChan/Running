@@ -7,7 +7,7 @@
 angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.homeCtrl', 'starter.runCtrl',
   'starter.generalController', 'starter.weaCtrl','logService','homeService','runInfoService','Directives','myPostInfoCtrls','postService'])
 
-  .run(function ($ionicPlatform,$cordovaToast,$rootScope, $location, $timeout, $ionicHistory,$ionicPopup,$templateCache,$state ) {
+  .run(function ($ionicPlatform,$cordovaToast,$rootScope, $location, $timeout, $ionicHistory,$ionicPopup,$http,$interval,locals) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -24,16 +24,13 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
       }
 
       //启动极光推送服务
-      window.plugins.jPushPlugin.init();
+    //  window.plugins.jPushPlugin.init();
       //调试模式
-      window.plugins.jPushPlugin.setDebugMode(true);
-      window.plugins.jPushPlugin.openNotificationInAndroidCallback = function (data)
+     // window.plugins.jPushPlugin.setDebugMode(true);
+  /*    window.plugins.jPushPlugin.openNotificationInAndroidCallback = function (data)
       {
-      //  var obj = JSON.parse(data);
-     //   var idValue = obj.extras['cn.jpush.android.EXTRA'].id;//对应极光推送： 附加字段的键名
-     //   var alert = obj.extras['cn.jpush.android.ALERT'];
-     //   $state.go('app.message', {id: idValue + alert});
-      };
+        alert(data);
+      };*/
     });
 
     $ionicPlatform.registerBackButtonAction(function (e) {
@@ -64,6 +61,30 @@ angular.module('starter', ['ionic', 'ngCordova','starter.services', 'starter.hom
       e.preventDefault();
       return false;
     }, 101);
+
+    //每16分钟发送用户信息检测是否有更新
+   /* $interval(function(){
+     console.log('updating every 10s');
+      if(locals.get('username','')!=null||locals.get('username','')!=undefined||locals.get('username','')!=''){
+        console.log(locals.get('username',''));
+         $http({
+         method:'get',
+         url:'http://120.27.107.121/test.php',
+         params:{
+         'account':locals.get('username','')
+         }
+         }).success(function(data,status,headers,config){
+           console.log(data.array);
+           $rootScope.$broadcast("JoinData", data.array);
+         }).error(function(data,status,headers,config){
+         console.log(data);
+         });
+        $rootScope.$on("JoinData", function (event, update_name) {
+           alert('有参与的活动已被取消，请到我的参与查看')
+        });
+      }
+    }, 10000);
+*/
 
   })
   .config(function ($httpProvider) {

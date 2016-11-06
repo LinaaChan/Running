@@ -98,6 +98,7 @@ angular.module('starter.homeCtrl', ['ngResource'])
 
      //获取详情(不需要登录)
       $scope.goToDetail = function(id){
+
           $state.go('app.runInfo',{'infoId':id});
       };
 
@@ -105,12 +106,16 @@ angular.module('starter.homeCtrl', ['ngResource'])
   .controller('messageCtrl',['$scope','myMsgServ', function ($scope,myMsgServ){
 
   }])
+
+  //我的参与控制器
   .controller('myJoinCtrl',['$scope','myJoinServ','$state', '$http',function ($scope,myJoinServ,$state,$http){
 
    //获取我参与的活动列表（分页）
     $scope.hasmore=true;
     var page = 1;
     $scope.listInfo=[];
+
+
     myJoinServ.getMyJoin(1).then(function(data){
       $scope.listInfo =  data.array;
       console.log(data);
@@ -164,8 +169,14 @@ angular.module('starter.homeCtrl', ['ngResource'])
     }
 
     //获取详情
-    $scope.goToDetail = function(id) {
-      $state.go('app.runInfo',{'infoId':id})
+    $scope.goToDetail = function(id,isCanceled) {
+      console.log(isCanceled);
+      if(isCanceled==1){
+
+      }else{
+        $state.go('app.runInfo',{'infoId':id})
+      }
+
     }
 
   }])
